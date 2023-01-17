@@ -7,6 +7,7 @@ import MapScreen from './Screen/MapScreen';
 import MeetingScreen from './Screen/MeetingRoomScreen';
 import ContactScreen from './Screen/ContactScreen';
 import { createDrawerNavigator } from '@react-navigation/drawer';
+import MapStack from './Navigation/MapStack';
 
 const Drawer = createDrawerNavigator();
 
@@ -24,31 +25,32 @@ export default function Root() {
           <Drawer.Screen name="HomeStack" 
             component={HomeStack} 
             options={{
-              DrawerBarLabel: 'Home',
+              title: 'Home',
+              headerTitle: ''
             }}
           />
           <Drawer.Screen name="Message" 
             component={MessageScreen} 
             options={{
-              DrawerBarLabel: 'Message',
+              title: 'Message',
             }}
           />
           <Drawer.Screen name="Map" 
             component={MapScreen} 
             options={{
-              DrawerBarLabel: 'Check in',
+              title: 'Check in',
             }}
           />
           <Drawer.Screen name="Meeting" 
             component={MeetingScreen} 
             options={{
-              DrawerBarLabel: 'Meeting room',
+              title: 'Meeting room',
             }}
           />
           <Drawer.Screen name="Contacts" 
             component={ContactScreen} 
             options={{
-              DrawerBarLabel: 'Contacts',
+              title: 'Contacts',
             }}
           />
         </Drawer.Navigator>

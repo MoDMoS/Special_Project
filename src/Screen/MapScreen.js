@@ -2,9 +2,12 @@ import React from 'react';
 import { StyleSheet, Button, SafeAreaView } from 'react-native';
 import Longdo from 'longdo-map-react-native';
 import Geolocation from '@react-native-community/geolocation';
+import { useNavigation } from '@react-navigation/native';
+import { NavigationActions } from 'react-navigation';
 
 Longdo.apiKey = 'f919d225cb7a5f8573f953a21d3dcd42';
 let map;
+
 
 export default class MapScreen extends React.Component {
 
@@ -47,6 +50,10 @@ export default class MapScreen extends React.Component {
     )
   }
 
+  navigateToScreen = (routeName) => {
+    this.props.navigation.navigate(routeName);
+  }
+
   // function onPressTest1() {
   //   map.call('Overlays.add', home);
   //   map.objectCall(home, 'pop', true);
@@ -81,6 +88,10 @@ export default class MapScreen extends React.Component {
         <Button
           onPress={this.onPressTest2}
           title="Where am I"
+        />
+        <Button
+          onPress={() => this.navigateToScreen('Auth')}
+          title="Check in"
         />
       </SafeAreaView>
     );
