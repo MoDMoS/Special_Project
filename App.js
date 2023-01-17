@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import { NavigationContainer } from '@react-navigation/native';
 
-import MainStack from './src/Navigation/MainStack';
-// import NavDrawer from './src/Navigation/Drawer';
+import Root from './src/Root';
 
 export default class App extends Component {
 
@@ -18,10 +16,7 @@ export default class App extends Component {
 
   render() {
     return  (
-      <NavigationContainer>
-        {/* <NavDrawer /> */}
-        <MainStack />
-      </NavigationContainer>
+      <Root />
     )
   }
 }

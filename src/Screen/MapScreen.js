@@ -6,8 +6,6 @@ import Geolocation from '@react-native-community/geolocation';
 Longdo.apiKey = 'f919d225cb7a5f8573f953a21d3dcd42';
 let map;
 
-
-
 export default class MapScreen extends React.Component {
 
   constructor(props) {

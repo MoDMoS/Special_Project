@@ -3,36 +3,17 @@ import { createMaterialBottomTabNavigator } from '@react-navigation/material-bot
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
-import Geolocation from '@react-native-community/geolocation';
-
-import HomeScreen from '../HomeScreen';
-import MessageScreen from '../MessageScreen';
-import MapScreen from '../MapScreen';
-import MeetingScreen from '../MeetingRoomScreen';
-import ContactScreen from '../ContactScreen';
+import HomeScreen from '../Screen/HomeScreen';
+import MessageScreen from '../Screen/MessageScreen';
+import MapScreen from '../Screen/MapScreen';
+import MeetingScreen from '../Screen/MeetingRoomScreen';
+import ContactScreen from '../Screen/ContactScreen';
 
 const Tab = createMaterialBottomTabNavigator();
 
-export default class MainStack extends React.Component {
-
-  constructor(props) {
-    super(props)
-    this.state = { chosenDate: new Date() }
-
-    this.setDate = this.setDate.bind(this)
-  }
-
-  setDate(newDate) {
-    this.setState({ chosenDate: newDate })
-  }
-
-  async componentDidMount() {
-    // this._getLocation()
-  }
-
-  render() {
+export default function HomeStack() {
     return (
-      // <NavigationContainer>
+      // <NavigationContainer> 
         <Tab.Navigator>
           <Tab.Screen name="Home" 
             component={HomeScreen} 
@@ -77,5 +58,4 @@ export default class MainStack extends React.Component {
         </Tab.Navigator>
       // </NavigationContainer>
     );
-  }
 }
