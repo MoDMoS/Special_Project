@@ -63,7 +63,7 @@ export default class MapScreen extends React.Component {
   onPressTest2 = async () => {
     let zoom = await map.call('zoom');
     let location = await map.call('location');
-    alert(location.lon + '\n' + location.lat + '\n' + zoom);
+    alert('Longitude : ' + location.lon + '\n' + 'Latitude : ' + location.lat);
   }
 
   render() {
