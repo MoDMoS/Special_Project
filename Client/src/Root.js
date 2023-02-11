@@ -1,6 +1,5 @@
 import { NavigationContainer } from '@react-navigation/native';
 
-import LoginScreen from './Screen/LoginScreen';
 import HomeStack from './Navigation/HomeStack';
 import MessageScreen from './Screen/MessageScreen';
 import MapScreen from './Screen/MapScreen';
@@ -8,6 +7,8 @@ import MeetingScreen from './Screen/MeetingRoomScreen';
 import ContactScreen from './Screen/ContactScreen';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import MapStack from './Navigation/MapStack';
+import LoginScreen from './Screen/LoginScreen';
+import RegisScreen from './Screen/RegisScreen';
 
 const Drawer = createDrawerNavigator();
 
@@ -15,13 +16,20 @@ export default function Root() {
   return (
     <NavigationContainer>
       <Drawer.Navigator>
-          <Drawer.Screen name="Login" 
-            component={LoginScreen} 
+          <Drawer.Screen name="LoginScreen" 
+            component={LoginScreen}
             options={{
               headerShown: false,
               drawerItemStyle: { display: 'none' }
             }}
-          />  
+          /> 
+          <Drawer.Screen name="Regis" 
+            component={RegisScreen}
+            options={{
+              headerShown: false,
+              drawerItemStyle: { display: 'none' }
+            }}
+          /> 
           <Drawer.Screen name="HomeStack" 
             component={HomeStack} 
             options={{

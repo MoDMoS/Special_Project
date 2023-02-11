@@ -10,7 +10,7 @@ const LoginScreen = () => {
   const handleSubmit = () => {
     // perform login action, such as sending a request to a server
     console.log(email, password);
-    navigation.navigate("HomeStack")
+    navigation.navigate("Regis")
   };
 
   return (

@@ -23,8 +23,6 @@ export default function HomeStack() {
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons name="home" color={color} size={26} />
           ),
-          title:'Home',
-          headerShow: false
         }}
       />
       <Tab.Screen name="Message" 
