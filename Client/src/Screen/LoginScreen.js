@@ -1,15 +1,21 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, TextInput, Button, StyleSheet } from 'react-native';
 
 const LoginScreen = () => {
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [Id, setId] = useState('');
   const navigation = useNavigation();
 
   const handleSubmit = () => {
     // perform login action, such as sending a request to a server
-    console.log(email, password);
+    const jsonData = {
+      email: email,
+      Id: Id
+    }
+
+    console.log(JSON.stringify(jsonData));
+
     navigation.navigate("Regis")
   };
 
@@ -17,16 +23,15 @@ const LoginScreen = () => {
     <View style={styles.container}>
       <TextInput
         style={styles.input}
-        placeholder="Email or username"
-        value={email}
-        onChangeText={(text) => setEmail(text)}
+        placeholder="ID"
+        value={Id}
+        onChangeText={(text) => setId(text)}
       />
       <TextInput
         style={styles.input}
-        placeholder="Password"
-        secureTextEntry={true}
-        value={password}
-        onChangeText={(text) => setPassword(text)}
+        placeholder="Email"
+        value={email}
+        onChangeText={(text) => setEmail(text)}
       />
       <Button title="Submit" onPress={handleSubmit} />
     </View>

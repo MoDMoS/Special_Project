@@ -2,21 +2,45 @@ const express = require('express')
 const mysql = require('mysql')
 
 const app = express()
+app.use(express.json())
 
 const connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
+    host: '171.99.253.60',
+    user: 'AdminTKS',
     password: '',
-    database: 'special_project'
+    database: 'special_project',
 })
 
 connection.connect((err) => {
-    if(err) {
+    if(!!err) {
         console.log("Error connecting to database =", err);
-        return
     }
-    console.log("MYSQL Connected!!");
+    else {
+        console.log('Connected...');
+    }
 })
 
-app.get('/', (req, res) => res.send('Hello World!'))
-app.listen(3000, () => console.log(`Example app listening on port 3000!`))
+app.get('/all', async (req, res) => {
+    try {
+        connection.query("SELECT * FROM employee", (err, result, fields) => {
+            if(err) {
+                console.log(err);
+                return res.status(400).send()
+            }
+            return res.status(200).json(result)
+        })
+    } catch (err) {
+        console.log(err);
+        return res.status(500).send()
+    }
+})
+
+app.post('/api/regis', function (req, res) {
+    let email = req.body.email;
+    if (email) {
+        connection.query()
+    }
+})
+
+app.listen(3001, () => console.log(`Example app listening on port 3000!`))
+module.exports = connection
