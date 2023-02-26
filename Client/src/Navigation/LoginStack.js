@@ -1,13 +1,24 @@
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import React from 'react';
+import { createStackNavigator } from '@react-navigation/stack';
 
-import LoginScreen from "../Screen/LoginScreen";
-import RegisScreen from "../Screen/RegisScreen";
+import LoginScreen from '../Screen/LoginScreen';
+import RegisScreen from '../Screen/RegisScreen';
+import RefScreen from '../Screen/RefScreen';
 
-const Stack = createNativeStackNavigator();
+const Stack = createStackNavigator();
 
 export default function LoginStack() {
-    <Stack.Navigator>
-        <Stack.Screen name='Login' component={LoginScreen} />
-        <Stack.Screen name="Regis" component={RegisScreen} />
-    </Stack.Navigator>
+    return (
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="LoginScreen"
+                component={LoginScreen}
+            />
+            <Stack.Screen name="RefScreen"
+                component={RefScreen}
+            />
+            <Stack.Screen name="RegisScreen"
+                component={RegisScreen}
+            />
+        </Stack.Navigator>
+    );
 }

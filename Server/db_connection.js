@@ -5,19 +5,19 @@ const app = express()
 app.use(express.json())
 
 const connection = mysql.createConnection({
-    host: '171.99.253.60',
-    user: 'AdminTKS',
-    password: '',
-    database: 'special_project',
+    host: 'localhost',
+    user: 'root',
+    password: 'root',
+    database: 'databaseproject',
+    port: '8889'
 })
 
 connection.connect((err) => {
-    if(!!err) {
+    if(err) {
         console.log("Error connecting to database =", err);
+        return
     }
-    else {
-        console.log('Connected...');
-    }
+    console.log("MYSQL Connected!!");
 })
 
 app.get('/all', async (req, res) => {
@@ -37,10 +37,19 @@ app.get('/all', async (req, res) => {
 
 app.post('/api/regis', function (req, res) {
     let email = req.body.email;
-    if (email) {
-        connection.query()
+    let id = req.body.Id;
+    try {
+        connection.query("SELECT * FROM employee WHERE Email="+ `'`+ email + `'` + 'AND EmployeeID=' + `'` + id + `'`, (err, result, fields) => {
+        if(err) {
+            console.log(err);
+            return res.status(400).send()
+        }
+        return res.status(200).json(result)
+        })
+    } catch (err) {
+        console.log(err);
+        return res.status(500).send()
     }
 })
 
 app.listen(3001, () => console.log(`Example app listening on port 3000!`))
-module.exports = connection
