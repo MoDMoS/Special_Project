@@ -10,26 +10,26 @@ const LoginScreen = () => {
 
   const handleSubmit = () => {
     // perform login action, such as sending a request to a server
-    fetch('http://localhost:3001/api/regis', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ email, Id }),
-    })
-      .then((response) => response.json())
-      .then((Data) => {
-        if (Data[0]) {
-          // navigation.navigate('RegisScreen', { data: JSON.stringify(Data[0]) })
-          navigation.navigate('RefScreen', { data: email })
-          // navigation.navigate('HomeStack')
-          // console.log(JSON.stringify(Data[0]))
-        } else {
-          Alert.alert("Error ID or Email not correctly");
-        }
-      })
-      .catch((error) => console.error(error));
-    // navigation.navigate('Regis')
+    // fetch('http://localhost:3001/api/regis', {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify({ email, Id }),
+    // })
+    //   .then((response) => response.json())
+    //   .then((Data) => {
+    //     if (Data[0]) {
+    //       // navigation.navigate('RegisScreen', { data: JSON.stringify(Data[0]) })
+    //       // navigation.navigate('RefScreen', { data: email })
+    //       navigation.navigate('HomeStack')
+    //       // console.log(JSON.stringify(Data[0]))
+    //     } else {
+    //       Alert.alert("Error ID or Email not correctly");
+    //     }
+    //   })
+    //   .catch((error) => console.error(error));
+    navigation.navigate('HomeStack')
   };
 
   return (

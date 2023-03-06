@@ -1,32 +1,37 @@
 import {StyleSheet, Text, View, Dimensions, Image} from 'react-native';
 import React, {useState, useRef, useEffect} from 'react';
 import {RNCamera} from 'react-native-camera';
+import { captureScreen } from 'react-native-view-shot';
 const width = Dimensions.get('window').width;
 const height = Dimensions.get('window').height;
 
 const AuthScreen = () => {
+  
   const [type, setType] = useState(RNCamera.Constants.Type.front);
   const [box, setBox] = useState(null);
   const cameraRef = useRef(null);
+
   const handlerFace = ({faces}) => {
     if (faces[0]) {
-      setBox({
-        boxs: {
-          width: faces[0].bounds.size.width,
-          height: faces[0].bounds.size.height,
-          x: faces[0].bounds.origin.x,
-          y: faces[0].bounds.origin.y,
-          yawAngle: faces[0].yawAngle,
-          rollAngle: faces[0].rollAngle,
+      captureScreen({
+        // Either png or jpg (or webm Android Only), Defaults: png
+        format: 'jpg',
+        // Quality 0.0 - 1.0 (only available for jpg)
+        quality: 0.8, 
+      }).then(
+        //callback function to get the result URL of the screnshot
+        (uri) => {
+          console.log("Image saved to", uri)
         },
-        rightEyePosition: faces[0].rightEyePosition,
-        leftEyePosition: faces[0].leftEyePosition,
-        bottomMounthPosition: faces[0].bottomMounthPosition,
-      });
+        (error) => console.error('Oops, Something Went Wrong', error),
+      );
     } else {
-      setBox(null);
+      console.log("Not face")
     }
+
+
   };
+
   return (
     <View style={styles.container}>
       <RNCamera
@@ -35,7 +40,9 @@ const AuthScreen = () => {
         type={type}
         captureAudio={false}
         onFacesDetected={handlerFace}
-        faceDetectionLandmarks={RNCamera.Constants.FaceDetection.Landmarks}
+        faceDetectionMode={RNCamera.Constants.FaceDetection.Mode.fast}
+        flashMode= {RNCamera.Constants.FlashMode.on}
+        faceDetectionLandmarks={RNCamera.Constants.FaceDetection.Landmarks.all}
       />
       {box && (
         <>
@@ -73,6 +80,15 @@ const styles = StyleSheet.create({
       borderWidth: 5,
       borderColor: 'red',
       zIndex: 3000,
+    };
+  },
+  glasses: ({rightEyePosition, leftEyePosition, yawAngle, rollAngle}) => {
+    return {
+      position: 'absolute',
+      top: rightEyePosition.y - 60,
+      left: rightEyePosition.x - 100,
+      resizeMode: 'contain',
+      width: Math.abs(leftEyePosition.x - rightEyePosition.x) + 100,
     };
   },
 });

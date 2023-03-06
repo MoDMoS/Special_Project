@@ -36,7 +36,7 @@ export default function HomeStack() {
       <Tab.Screen name="Map" 
         component={MapScreen} 
         options={{
-          tabBarLabel: 'Check in',
+          tabBarLabel: 'Check out',
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons name="account-check" color={color} size={26} />
           ),
