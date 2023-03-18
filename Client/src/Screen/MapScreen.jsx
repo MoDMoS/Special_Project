@@ -19,10 +19,6 @@ export default class MapScreen extends React.Component {
     };
   }
 
-  componentDidMount() { 
-    this._getLocation();
-  }
-
   onReady = () => {
     console.log('ready ' + new Date());
     map.call('Overlays.load', Longdo.object('Overlays.Object', 'A00146852', 'LONGDO'));
@@ -42,7 +38,7 @@ export default class MapScreen extends React.Component {
     Geolocation.getCurrentPosition(
       (position) => {
         this.setState({ latitude: position.coords.latitude, longitude: position.coords.longitude });
-        console.log(this.state)
+        // console.log(this.state)
       },
       (error) => {
         console.log('error')
@@ -67,13 +63,14 @@ export default class MapScreen extends React.Component {
   }
 
   render() {
+    this._getLocation()
     return (
       <SafeAreaView style={styles.container}>
         <Longdo.MapView
           ref={r => (map = r)}
           layer={Longdo.static('Layers', 'GRAY')}
-          zoom={15}
-          zoomRange={{min: 10, max: 20}}
+          zoom={18}
+          zoomRange={{min: 15, max: 20}}
           location={{ lon: this.state.longitude, lat: this.state.latitude }}
           // ui={false}
           lastView={false}

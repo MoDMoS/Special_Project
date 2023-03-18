@@ -6,8 +6,11 @@ import AuthScreen from "../Screen/AuthScreen";
 const Stack = createNativeStackNavigator();
 
 export default function MapStack() {
-    <Stack.Navigator>
-        <Stack.Screen name='Map' component={MapScreen} />
-        <Stack.Screen name="Auth" component={AuthScreen} />
-    </Stack.Navigator>
+    return (
+        <Stack.Navigator>
+            <Stack.Screen name='Map' component={MapScreen} />
+            <Stack.Screen name="Auth" component={AuthScreen} />
+        </Stack.Navigator>
+    )
+
 }

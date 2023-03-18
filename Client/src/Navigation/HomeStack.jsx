@@ -10,6 +10,7 @@ import MeetingScreen from '../Screen/MeetingRoomScreen';
 import ContactScreen from '../Screen/ContactScreen';
 import MapStack from './MapStack';
 import AuthScreen from '../Screen/AuthScreen';
+import MessageStack from './MessageStack';
 
 const Tab = createBottomTabNavigator();
 
@@ -25,16 +26,16 @@ export default function HomeStack() {
           ),
         }}
       />
-      <Tab.Screen name="Message" 
-        component={MessageScreen} 
+      <Tab.Screen name="MessageStack" 
+        component={MessageStack} 
         options={{
           tabBarLabel: 'Message',
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons name="message-alert" color={color} size={26} />
           ),
       }}/>
-      <Tab.Screen name="Map" 
-        component={MapScreen} 
+      <Tab.Screen name="MapStack" 
+        component={MapStack} 
         options={{
           tabBarLabel: 'Check out',
           tabBarIcon: ({ color }) => (
@@ -56,12 +57,6 @@ export default function HomeStack() {
           tabBarIcon: ({ color }) => (
             <MaterialIcons name="contact-phone" color={color} size={26} />
           ),
-      }}/>
-      <Tab.Screen name="Auth" 
-        component={AuthScreen} 
-        options={{
-          tabBarButton: (props) => null,
-          // tabBarStyle: { display: 'none' },
       }}/>
     </Tab.Navigator>
   );
