@@ -1,7 +1,17 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
-import { View, TextInput, Button, StyleSheet, Alert, Image, Text } from 'react-native';
+import {
+  View,
+  TextInput,
+  Button,
+  StyleSheet,
+  Alert,
+  Image,
+  Text,
+} from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+
+import Service from '../api';
 
 const LoginScreen = () => {
   const [email, setEmail] = useState('');
@@ -9,50 +19,42 @@ const LoginScreen = () => {
   const navigation = useNavigation();
 
   const handleSubmit = () => {
-    // perform login action, such as sending a request to a server
-    fetch('http://103.253.73.66:3000/api/regis', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ email, Id }),
-    })
-      .then((response) => response.json())
-      .then((Data) => {
+    Service.RegisterAPI(email, Id)
+      .then((response) => {
+        const Data = response.data;
+        // console.log(response.data);
         if (Data[0]) {
           navigation.navigate('RegisScreen', { data: JSON.stringify(Data[0]) })
           // navigation.navigate('RefScreen', { data: email })
-          // navigation.navigate('HomeStack')
-          // console.log(JSON.stringify(Data[0]))
         } else {
           Alert.alert("Error ID or Email not correctly");
         }
       })
-      .catch((error) => console.error(error));
+      .catch(error => console.error(error));
     // navigation.navigate('HomeStack')
   };
 
   return (
     <View style={styles.container}>
-      <Image
-        source={require('../../asset/Logo.png')}
-        style={styles.logo}
-      />
+      <Image source={require('../../asset/Logo.png')} style={styles.logo} />
       <TextInput
         style={styles.input}
         placeholder="ID"
         value={Id}
-        onChangeText={(text) => setId(text)}
+        onChangeText={text => setId(text)}
         autoCapitalize="none"
       />
       <TextInput
         style={styles.input}
         placeholder="Email"
         value={email}
-        onChangeText={(text) => setEmail(text)}
+        onChangeText={text => setEmail(text)}
         autoCapitalize="none"
       />
-      <TouchableOpacity style={styles.button} activeOpacity={0.5} onPress={handleSubmit}>
+      <TouchableOpacity
+        style={styles.button}
+        activeOpacity={0.5}
+        onPress={handleSubmit}>
         <Text style={styles.buttonTextStyle}>Submit</Text>
       </TouchableOpacity>
     </View>
@@ -64,7 +66,7 @@ const styles = StyleSheet.create({
     width: '70%',
     height: '20%',
     resizeMode: 'contain',
-    marginBottom: 30
+    marginBottom: 30,
   },
   container: {
     flex: 1,
