@@ -5,11 +5,10 @@ const app = express()
 app.use(express.json())
 
 const connection = mysql.createConnection({
-    host: '103.253.73.66',
+    host: 'localhost',
     user: 'root',
     password: 'Koonmos123',
     database: 'databaseproject',
-    port: '3306'
 })
 
 connection.connect((err) => {
@@ -37,7 +36,7 @@ app.get('/all', async (req, res) => {
 
 app.post('/api/regis', function (req, res) {
     let email = req.body.email;
-    let id = req.body.Id;
+    let id = req.body.id;
     try {
         connection.query("SELECT * FROM employee WHERE Email="+ `'`+ email + `'` + 'AND EmployeeID=' + `'` + id + `'`, (err, result, fields) => {
         if(err) {
@@ -54,7 +53,7 @@ app.post('/api/regis', function (req, res) {
 
 app.get('/api/news', async (req, res) => {
     try {
-        connection.query("SELECT NewsTitle, `NewsDetail` FROM `news` WHERE 1", (err, result, fields) => {
+        connection.query("SELECT `TopicNews`, `NewsDetail` FROM `news` WHERE 1", (err, result, fields) => {
             if(err) {
                 console.log(err);
                 return res.status(400).send()
@@ -67,4 +66,4 @@ app.get('/api/news', async (req, res) => {
     }
 })
 
-app.listen(80, () => console.log(`Example app listening on port 3000!`))
+app.listen(3000, () => console.log(`Example app listening on port 3000!`))

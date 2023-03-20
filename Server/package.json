@@ -5,8 +5,7 @@
   "main": "db_connection.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon db_connection.js",
-    "test2": "nodemon test.js"
+    "dev": "nodemon db_connection.js"
   },
   "keywords": [],
   "author": "",
