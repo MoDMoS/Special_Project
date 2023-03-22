@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { FlatList, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { List } from 'react-native-paper';
 
+import Service from '../api';
+
 export default class MessageScreen extends React.Component {
   constructor(props) {
     super(props);
@@ -12,16 +14,10 @@ export default class MessageScreen extends React.Component {
   }
 
   componentDidMount() {
-    fetch('http://localhost:3000/api/news', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then((response) => response.json())
-      .then((Data) => {
-        this.setState({ news: Data });
-        console.log(Data);
+    Service.NewsAPI()
+      .then((response) => {
+        // console.log(response.data);
+        this.setState({ news: response.data });
       })
       .catch((error) => console.error(error));
   }
@@ -42,12 +38,12 @@ export default class MessageScreen extends React.Component {
               <List.Item
                 style={styles.listItem}
                 key={index}
-                title={item['NewsTitle']}
+                title={item['TopicNews']}
                 titleStyle={{ fontSize: 24, fontWeight: 'bold' }}
                 titleNumberOfLines={1}
                 description={item['NewsDetail']}
                 descriptionStyle={{ fontSize: 18 }}
-                descriptionNumberOfLines={4}
+                descriptionNumberOfLines={3}
                 keyExtractor={(item) => item.id.toString()}
               />
             </TouchableOpacity>)

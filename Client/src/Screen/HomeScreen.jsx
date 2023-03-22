@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
+import Service from '../api';
+
 export default class HomeScreen extends React.Component {
   constructor(props) {
     super(props);
@@ -18,16 +20,10 @@ export default class HomeScreen extends React.Component {
       });
     }, 1000);
 
-    fetch('http://localhost:3000/api/news', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        this.setState({ news: data });
-        console.log(data);
+    Service.NewsAPI()
+      .then((response) => {
+        // console.log(response.data);
+        this.setState({ news: response.data });
       })
       .catch((error) => console.error(error));
   }

@@ -27,7 +27,6 @@ class AuthScreen extends Component {
             this.props.navigation.navigate('Map');
         })
         .catch((error) => console.error('Error saving image to camera roll: ', error));
-
       }
     }
     else {

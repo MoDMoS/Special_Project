@@ -19,13 +19,15 @@ const LoginScreen = () => {
   const navigation = useNavigation();
 
   const handleSubmit = () => {
-    Service.RegisterAPI(email, Id)
+    Service.CheckUserAPI(email, Id)
       .then((response) => {
         const Data = response.data;
-        // console.log(response.data);
+        console.log(response.data);
         if (Data[0]) {
           navigation.navigate('RegisScreen', { data: JSON.stringify(Data[0]) })
           // navigation.navigate('RefScreen', { data: email })
+          // navigation.navigate('HomeStack')
+          // navigation.navigate('RegisAuth', { data: JSON.stringify(Data[0]) })
         } else {
           Alert.alert("Error ID or Email not correctly");
         }

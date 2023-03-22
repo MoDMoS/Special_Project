@@ -4,8 +4,9 @@ import Longdo from 'longdo-map-react-native';
 import Geolocation from '@react-native-community/geolocation';
 import { useNavigation } from '@react-navigation/native';
 import { NavigationActions } from 'react-navigation';
+import { REACT_APP_KEY_API_MAP } from '@env';
 
-Longdo.apiKey = 'f919d225cb7a5f8573f953a21d3dcd42';
+Longdo.apiKey = REACT_APP_KEY_API_MAP;
 let map;
 
 

@@ -7,7 +7,7 @@ const Stack = createNativeStackNavigator();
 
 export default function MessageStack() {
     return (
-        <Stack.Navigator>
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
             <Stack.Screen name='Message' component={MessageScreen} />
             <Stack.Screen name="Details" component={DetailScreen} />
         </Stack.Navigator>

@@ -7,7 +7,7 @@ const Stack = createNativeStackNavigator();
 
 export default function MapStack() {
     return (
-        <Stack.Navigator>
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
             <Stack.Screen name='Map' component={MapScreen} />
             <Stack.Screen name="Auth" component={AuthScreen} />
         </Stack.Navigator>

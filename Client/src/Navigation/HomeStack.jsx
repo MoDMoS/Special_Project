@@ -29,7 +29,7 @@ export default function HomeStack() {
       <Tab.Screen name="MessageStack" 
         component={MessageStack} 
         options={{
-          tabBarLabel: 'Message',
+          tabBarLabel: 'News',
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons name="message-alert" color={color} size={26} />
           ),
