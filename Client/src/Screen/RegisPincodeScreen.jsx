@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: '#fff',
+    backgroundColor: 'rgba(252, 206, 136, 0.75)',
   },
   row: {
     flexDirection: 'row',
@@ -116,13 +116,14 @@ const styles = StyleSheet.create({
   pinInput: {
     width: 70,
     height: 70,
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 5,
+    borderWidth: 3,
+    borderColor: 'black',
+    borderRadius: 100,
     marginHorizontal: 5,
     fontSize: 24,
     fontWeight: 'bold',
     textAlign: 'center',
+    backgroundColor: '#fff'
   },
   button: {
     marginTop: 50,

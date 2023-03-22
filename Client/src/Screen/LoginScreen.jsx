@@ -25,20 +25,17 @@ const LoginScreen = () => {
         console.log(response.data);
         if (Data[0]) {
           navigation.navigate('RegisScreen', { data: JSON.stringify(Data[0]) })
-          // navigation.navigate('RefScreen', { data: email })
-          // navigation.navigate('HomeStack')
-          // navigation.navigate('RegisAuth', { data: JSON.stringify(Data[0]) })
         } else {
           Alert.alert("Error ID or Email not correctly");
         }
       })
       .catch(error => console.error(error));
-    // navigation.navigate('HomeStack')
   };
 
   return (
     <View style={styles.container}>
       <Image source={require('../../asset/Logo.png')} style={styles.logo} />
+      <Text style={{ fontSize: 18, fontWeight: 'bold', marginLeft: 20}}>รหัสประจำตัวพนักงาน</Text>
       <TextInput
         style={styles.input}
         placeholder="ID"
@@ -46,6 +43,7 @@ const LoginScreen = () => {
         onChangeText={text => setId(text)}
         autoCapitalize="none"
       />
+      <Text style={{ fontSize: 18, fontWeight: 'bold', marginLeft: 20}}>Email</Text>
       <TextInput
         style={styles.input}
         placeholder="Email"
@@ -65,19 +63,20 @@ const LoginScreen = () => {
 
 const styles = StyleSheet.create({
   logo: {
-    width: '70%',
+    width: '80%',
     height: '20%',
+    marginTop: 150,
     resizeMode: 'contain',
+    alignSelf: 'center',
     marginBottom: 30,
   },
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    padding: 30,
     backgroundColor: 'rgba(252, 206, 136, 0.8)',
   },
   input: {
-    width: '80%',
+    width: '95%',
     padding: 10,
     margin: 10,
     borderWidth: 1,
@@ -86,20 +85,21 @@ const styles = StyleSheet.create({
     borderRadius: 30,
   },
   button: {
-    backgroundColor: 'rgba(56, 150, 255, 1)',
+    backgroundColor: 'blue',
     borderWidth: 1,
     borderColor: 'black',
     width: 200,
-    alignItems: 'center',
+    alignSelf: 'center',
     borderRadius: 30,
     marginTop: 20,
     marginVertical: 10,
   },
   buttonTextStyle: {
-    color: 'black',
-    paddingVertical: 10,
-    padding: 20,
+    color: 'white',
+    fontWeight: 'bold',
+    alignSelf: 'center',
     fontSize: 16,
+    padding: 10,
   },
 });
 

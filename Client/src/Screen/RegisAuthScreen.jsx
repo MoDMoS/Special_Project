@@ -64,7 +64,7 @@ class RegisAuthScreen extends Component {
       const response = await Service.RegisAuthAPI(formData);
       // console.log(response.data);
       if(response.data == "File uploaded successfully"){
-        this.props.navigation.navigate('HomeStack');
+        this.props.navigation.navigate('Pincode');
       }
     } catch (error) {
       console.log(error);

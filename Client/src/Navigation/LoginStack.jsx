@@ -21,7 +21,7 @@ export default function LoginStack() {
             <Stack.Screen name="RegisScreen"
                 component={RegisScreen}
             />
-            <Stack.Screen name="Pincode"
+            <Stack.Screen name="RegisPincode"
                 component={RegisPincodeScreen}
             />
             <Stack.Screen name="RegisAuth"

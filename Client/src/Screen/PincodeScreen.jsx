@@ -1,5 +1,5 @@
-import {useNavigation, useRoute} from '@react-navigation/native';
-import React, {useState} from 'react';
+import { useNavigation } from '@react-navigation/native';
+import React, { useState } from 'react';
 import {
   View,
   TextInput,
@@ -8,8 +8,6 @@ import {
   Text,
   Alert,
 } from 'react-native';
-import DeviceInfo from 'react-native-device-info';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const PincodeScreen = ({route}) => {
   const navigation = useNavigation();
@@ -46,7 +44,7 @@ const PincodeScreen = ({route}) => {
     <View style={styles.container}>
       <View style={styles.column}>
         <Text style={{fontSize: 50, marginTop: 200}}>Pin Code</Text>
-        <Text style={{fontSize: 20}}>ใส่รหัสผ่านเพื่อใช้งานแอพ</Text>
+        <Text style={{fontSize: 20}}>ใส่รหัสผ่านเพื่อเข้าใช้งานแอพ</Text>
         <View style={styles.row}>
           <TextInput
             ref={ref => (refs[0] = ref)}
@@ -97,7 +95,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: '#fff',
+    backgroundColor: 'rgba(252, 206, 136, 0.75)',
   },
   row: {
     flexDirection: 'row',
@@ -114,20 +112,21 @@ const styles = StyleSheet.create({
   pinInput: {
     width: 70,
     height: 70,
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 5,
+    borderWidth: 3,
+    borderColor: 'black',
+    borderRadius: 100,
     marginHorizontal: 5,
     fontSize: 24,
     fontWeight: 'bold',
     textAlign: 'center',
+    backgroundColor: '#fff'
   },
   button: {
     marginTop: 50,
     backgroundColor: 'blue',
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    borderRadius: 5,
+    paddingHorizontal: 30,
+    paddingVertical: 20,
+    borderRadius: 50,
   },
   buttonText: {
     color: 'white',
