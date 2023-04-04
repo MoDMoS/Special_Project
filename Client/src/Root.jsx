@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {NavigationContainer} from '@react-navigation/native';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -10,6 +9,8 @@ import MapStack from './Navigation/MapStack';
 import MeetingScreen from './Screen/MeetingRoomScreen';
 import ContactScreen from './Screen/ContactScreen';
 import PincodeScreen from './Screen/PincodeScreen';
+import Geolocation from '@react-native-community/geolocation';
+import ReportsScreen from './Screen/ReportsScreen';
 
 const Drawer = createDrawerNavigator();
 
@@ -18,11 +19,13 @@ class Root extends Component {
     super(props);
     this.state = {
       initialScreen: null,
+      mockLocationEnabled: false,
     };
     this.account = {
       pincode: null,
       empId: null,
-    }
+    };
+    this.checkForMockLocation();
   }
 
   getData = async () => {
@@ -31,21 +34,38 @@ class Root extends Component {
       const ID = await AsyncStorage.getItem('ID');
       if (Pincode !== null) {
         // console.log(Pincode);
-        this.account.pincode = Pincode
-        this.account.empId = ID
-        this.setState({ initialScreen: 'LoginStack' });
+        this.account.pincode = Pincode;
+        this.account.empId = ID;
+        this.setState({initialScreen: 'LoginStack'});
       } else {
-        this.setState({ initialScreen: 'LoginStack' });
+        this.setState({initialScreen: 'LoginStack'});
       }
     } catch (error) {
       console.log(error);
     }
   };
 
+  checkForMockLocation = () => {
+    Geolocation.getCurrentPosition(
+      position => {
+        const {latitude, longitude, accuracy} = position.coords;
+        console.log(position.coords)
+        if (accuracy > 50) {
+          this.setState({mockLocationEnabled: true});
+          console.log('Mock location detected');
+        } else {
+          console.log('Real location');
+        }
+      },
+      error => console.log(error),
+      {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000},
+    );
+  };
+
   render() {
     this.getData();
-    const {initialScreen} = this.state;
-    if (initialScreen) {
+    const {initialScreen, mockLocationEnabled} = this.state;
+    if (initialScreen && !mockLocationEnabled) {
       // console.log(this.account.pincode);
       return (
         <Drawer.Navigator initialRouteName={initialScreen}>
@@ -102,8 +122,17 @@ class Root extends Component {
               title: 'Contacts',
             }}
           />
+          <Drawer.Screen
+            name="Reports"
+            component={ReportsScreen}
+            options={{
+              title: 'Reports',
+            }}
+          />
         </Drawer.Navigator>
       );
+    } else {
+      return
     }
   }
 }

@@ -2,9 +2,10 @@ import React from 'react';
 import { StyleSheet, Button, SafeAreaView } from 'react-native';
 import Longdo from 'longdo-map-react-native';
 import Geolocation from '@react-native-community/geolocation';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { NavigationActions } from 'react-navigation';
 import { REACT_APP_KEY_API_MAP } from '@env';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 Longdo.apiKey = REACT_APP_KEY_API_MAP;
 let map;
@@ -47,18 +48,12 @@ export default class MapScreen extends React.Component {
     )
   }
 
-  navigateToScreen = (routeName) => {
-    this.props.navigation.navigate(routeName);
+  navigateToScreen = async (routeName) => {
+    const ID = await AsyncStorage.getItem('ID');
+    this.props.navigation.navigate(routeName, { data: ID });
   }
 
-  // function onPressTest1() {
-  //   map.call('Overlays.add', home);
-  //   map.objectCall(home, 'pop', true);
-  //   map.call('location', loc);
-  // }
-
   onPressTest2 = async () => {
-    let zoom = await map.call('zoom');
     let location = await map.call('location');
     alert('Longitude : ' + location.lon + '\n' + 'Latitude : ' + location.lat);
   }

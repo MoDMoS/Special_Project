@@ -42,14 +42,15 @@ class RegisAuthScreen extends Component {
   takePicture = async () => {
     const options = {quality: 0.8, base64: false};
     const data = await this.camera.takePictureAsync(options);
-    // console.log(data.uri);
+    console.log(data.uri);
     this.setState({imageUri: data.uri});
   }
 
   uploadPicture = async (data) => {
     const formData = new FormData();
+    console.log(data);
     formData.append('picture', {
-      uri: data.uri,
+      uri: data,
       type: 'image/jpeg',
       name: `${this.EmpID}.jpg`,
     });
@@ -57,8 +58,8 @@ class RegisAuthScreen extends Component {
     formData.append('Pin', this.Pin);
     formData.append('Device', this.DeviceModel);
     const check = await Service.CheckAccountAPI(this.EmpID);
-    console.log(check.data);
     formData.append('Check', check.data);
+    // console.log(formData);
 
     try {
       const response = await Service.RegisAuthAPI(formData);

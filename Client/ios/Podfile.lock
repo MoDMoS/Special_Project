@@ -376,6 +376,8 @@ PODS:
     - React-Core
   - react-native-geolocation (3.0.5):
     - React-Core
+  - react-native-geolocation-service (5.3.1):
+    - React
   - react-native-mail (6.1.1):
     - React-Core
   - react-native-maps (1.4.0):
@@ -553,6 +555,7 @@ DEPENDENCIES:
   - react-native-camera/FaceDetectorMLKit (from `../node_modules/react-native-camera`)
   - "react-native-cameraroll (from `../node_modules/@react-native-camera-roll/camera-roll`)"
   - "react-native-geolocation (from `../node_modules/@react-native-community/geolocation`)"
+  - react-native-geolocation-service (from `../node_modules/react-native-geolocation-service`)
   - react-native-mail (from `../node_modules/react-native-mail`)
   - react-native-maps (from `../node_modules/react-native-maps`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
@@ -663,6 +666,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-camera-roll/camera-roll"
   react-native-geolocation:
     :path: "../node_modules/@react-native-community/geolocation"
+  react-native-geolocation-service:
+    :path: "../node_modules/react-native-geolocation-service"
   react-native-mail:
     :path: "../node_modules/react-native-mail"
   react-native-maps:
@@ -767,6 +772,7 @@ SPEC CHECKSUMS:
   react-native-camera: 3eae183c1d111103963f3dd913b65d01aef8110f
   react-native-cameraroll: cb752fda6d5268f1646b4390bd5be1f27706b9a0
   react-native-geolocation: 7383cbe9fa75b168bbbe40b566070fd0b44d30d6
+  react-native-geolocation-service: 608e1da71a1ac31b4de64d9ef2815f697978c55b
   react-native-mail: 8fdcd3aef007c33a6877a18eb4cf7447a1d4ce4a
   react-native-maps: 7135a33610202745d08fdf151ce6b0d01952a99c
   react-native-safe-area-context: 39c2d8be3328df5d437ac1700f4f3a4f75716acc

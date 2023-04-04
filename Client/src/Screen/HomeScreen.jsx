@@ -1,15 +1,22 @@
-import React, { useEffect, useState } from 'react';
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 
 import Service from '../api';
+import {List} from 'react-native-paper';
 
 export default class HomeScreen extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {
       dateTime: new Date(),
-      news: null
+      news: null,
     };
   }
 
@@ -19,74 +26,72 @@ export default class HomeScreen extends React.Component {
         dateTime: new Date(),
       });
     }, 1000);
-
-    Service.NewsAPI()
-      .then((response) => {
-        // console.log(response.data);
-        this.setState({ news: response.data });
-      })
-      .catch((error) => console.error(error));
+    this.api();
   }
 
   componentWillUnmount() {
     clearInterval(this.intervalId);
   }
 
+  api() {
+    Service.NewsPinAPI()
+      .then(response => {
+        // console.log(response.data);
+        this.setState({news: response.data});
+      })
+      .catch(error => console.error(error));
+  }
+
+  handleItemPress = itemId => {
+    // console.log(itemId);
+    this.props.navigation.navigate('MessageStack', {
+      screen: 'Details',
+      params: {itemId},
+    });
+  };
 
   render() {
-    const { dateTime, news } = this.state;
+    const {dateTime, news} = this.state;
     return (
       <View style={styles.container}>
         <View style={styles.widthbox}>
           <Image style={styles.logo} source={require('../../asset/Logo.png')} />
           <View style={styles.time}>
-            <Text style={{ fontSize: 18 }}>{dateTime.toLocaleDateString('th-TH', { day: 'numeric', month: 'long', year: 'numeric' })}</Text>
-            <Text style={{ fontSize: 50 }}>{dateTime.toLocaleTimeString('th-TH', { hour12: false })}</Text>
+            <Text style={{fontSize: 18}}>
+              {dateTime.toLocaleDateString('th-TH', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric',
+              })}
+            </Text>
+            <Text style={{fontSize: 48}}>
+              {dateTime.toLocaleTimeString('th-TH', {hour12: false})}
+            </Text>
           </View>
         </View>
-        <View style={styles.column}>
-          <View style={styles.row}>
-            <TouchableOpacity onPress={() => this.props.navigation.navigate('Message')}>
-              <View style={styles.box}>
-                {Array.isArray(news) && news.map((item, index) =>
-                  index === 0 ? (
-                    <Text key={index} style={styles.newsText} numberOfLines={5}>{item['NewsDetail']}</Text>
-                  ) : null
-                )}
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => this.props.navigation.navigate('Message')}>
-              <View style={styles.box}>
-                {Array.isArray(news) && news.map((item, index) =>
-                  index === 1 ? (
-                    <Text key={index} style={styles.newsText} numberOfLines={5}>{item['NewsDetail']}</Text>)
-                    : null
-                )}
-              </View>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.row}>
-            <TouchableOpacity onPress={() => this.props.navigation.navigate('Message')}>
-              <View style={styles.box}>
-                {Array.isArray(news) && news.map((item, index) =>
-                  index === 2 ? (
-                    <Text key={index} style={styles.newsText} numberOfLines={5}>{item['NewsDetail']}</Text>)
-                    : null
-                )}
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => this.props.navigation.navigate('Message')}>
-              <View style={styles.box}>
-                {Array.isArray(news) && news.map((item, index) =>
-                  index === 3 ? (
-                    <Text key={index} style={styles.newsText} numberOfLines={5}>{item['NewsDetail']}</Text>)
-                    : null
-                )}
-              </View>
-            </TouchableOpacity>
-
-          </View>
-        </View>
+        <ScrollView>
+          <List.Section>
+            {Array.isArray(news) &&
+              news.map((item, index) => (
+                <TouchableOpacity
+                  key={index}
+                  onPress={() => this.handleItemPress(item)}>
+                  {/* {console.log(item['TopicNews'])} */}
+                  <List.Item
+                    style={styles.listItem}
+                    key={index}
+                    title={item['TopicNews']}
+                    titleStyle={{fontSize: 24, fontWeight: 'bold'}}
+                    titleNumberOfLines={1}
+                    description={item['NewsDetail']}
+                    descriptionStyle={{fontSize: 18}}
+                    descriptionNumberOfLines={3}
+                    keyExtractor={item => item.id.toString()}
+                  />
+                </TouchableOpacity>
+              ))}
+          </List.Section>
+        </ScrollView>
       </View>
     );
   }
@@ -95,21 +100,11 @@ export default class HomeScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
+    // alignItems: 'center',
     justifyContent: 'center',
   },
-  row: {
-    flex: 1,
-    flexDirection: 'row',
-    padding: 10,
-  },
-  column: {
-    flex: 1,
-    flexDirection: 'column',
-    padding: 10,
-  },
   widthbox: {
-    width: 400,
+    width: '100%',
     height: 200,
     borderWidth: 1,
     borderColor: 'black',
@@ -120,20 +115,13 @@ const styles = StyleSheet.create({
   time: {
     justifyContent: 'center',
     flexDirection: 'column',
-    // borderColor: 'black',
-    // borderWidth: 1,
   },
-  box: {
-    width: 180,
-    height: 220,
-    borderWidth: 1,
-    borderColor: 'black',
+  listItem: {
     backgroundColor: 'white',
-    marginTop: 10,
-    marginStart: 5,
-    marginEnd: 5,
-    flexWrap: 'wrap',
-    alignItems: 'center',
+    borderRadius: 10,
+    height: 150,
+    margin: 10,
+    fontSize: 18,
   },
   logo: {
     width: '45%',
@@ -143,5 +131,5 @@ const styles = StyleSheet.create({
   newsText: {
     fontSize: 20,
     flexWrap: 'wrap',
-  }
-})
+  },
+});

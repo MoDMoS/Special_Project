@@ -4,13 +4,11 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 import HomeScreen from '../Screen/HomeScreen';
-import MessageScreen from '../Screen/MessageScreen';
-import MapScreen from '../Screen/MapScreen';
 import MeetingScreen from '../Screen/MeetingRoomScreen';
 import ContactScreen from '../Screen/ContactScreen';
 import MapStack from './MapStack';
-import AuthScreen from '../Screen/AuthScreen';
 import MessageStack from './MessageStack';
+import DetailScreen from '../Screen/DetailScreen';
 
 const Tab = createBottomTabNavigator();
 

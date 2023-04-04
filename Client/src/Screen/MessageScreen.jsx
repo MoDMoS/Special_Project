@@ -46,9 +46,8 @@ export default class MessageScreen extends React.Component {
                 descriptionNumberOfLines={3}
                 keyExtractor={(item) => item.id.toString()}
               />
-            </TouchableOpacity>)
-          }
-
+            </TouchableOpacity>
+          )}
         </List.Section>
       </ScrollView>
     );
@@ -56,19 +55,6 @@ export default class MessageScreen extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  listItem: {
-    padding: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc'
-  },
-  newsTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 5
-  },
-  newsText: {
-    fontSize: 16
-  },
   listItem: {
     backgroundColor: 'white',
     borderRadius: 10,
