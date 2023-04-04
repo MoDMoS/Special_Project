@@ -36,7 +36,7 @@ class Root extends Component {
         // console.log(Pincode);
         this.account.pincode = Pincode;
         this.account.empId = ID;
-        this.setState({initialScreen: 'LoginStack'});
+        this.setState({initialScreen: 'Pincode'});
       } else {
         this.setState({initialScreen: 'LoginStack'});
       }

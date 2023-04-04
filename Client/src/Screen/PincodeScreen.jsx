@@ -17,16 +17,23 @@ const PincodeScreen = ({route}) => {
   const data = route.params;
 
   const handlePinChange = (value, index) => {
-    // update the pin state with the entered value
+    // update the pin state with the entered value or remove it if empty
     const newPin = pin.split('');
-    newPin[index] = value;
+    if (value === '') {
+      newPin[index] = '';
+    } else {
+      newPin[index] = value;
+    }
     setPin(newPin.join(''));
-
-    // move focus to the next input box
+  
+    // move focus to the previous or next input box
     if (value !== '' && index < 3) {
       refs[index + 1].focus();
+    } else if (value === '' && index > 0) {
+      refs[index - 1].focus();
     }
   };
+  
 
   const handleSubmit = () => {
     if (pin.length === 4) {
