@@ -26,7 +26,6 @@ export default class HomeScreen extends React.Component {
         dateTime: new Date(),
       });
     }, 1000);
-    this.api();
   }
 
   componentWillUnmount() {
@@ -52,6 +51,7 @@ export default class HomeScreen extends React.Component {
 
   render() {
     const {dateTime, news} = this.state;
+    this.api();
     return (
       <View style={styles.container}>
         <View style={styles.widthbox}>

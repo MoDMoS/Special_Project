@@ -1,101 +1,111 @@
-import React from 'react';
-import { StyleSheet, Button, SafeAreaView } from 'react-native';
+import React, {useState, useEffect, useRef} from 'react';
+import {StyleSheet, Button, SafeAreaView} from 'react-native';
 import Longdo from 'longdo-map-react-native';
 import Geolocation from '@react-native-community/geolocation';
-import { useNavigation, useRoute } from '@react-navigation/native';
-import { NavigationActions } from 'react-navigation';
-import { REACT_APP_KEY_API_MAP } from '@env';
+import {useNavigation} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-Longdo.apiKey = REACT_APP_KEY_API_MAP;
+import Service from '../api';
+
+Longdo.apiKey = process.env.REACT_APP_KEY_API_MAP;
 let map;
 
+export default function MapScreen({route}) {
+  const [location, setLocation] = useState(null);
+  const [check, setCheck] = useState(null);
+  const navigation = useNavigation();
+  const homeRef = useRef(null);
 
-export default class MapScreen extends React.Component {
+  useEffect(() => {
+    Geolocation.getCurrentPosition(
+      position => {
+        setLocation({
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+        });
+      },
+      error => {
+        console.log('error');
+      },
+    );
+  }, []);
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      latitude: null,
-      longitude: null
-    };
-  }
-
-  onReady = () => {
+  const onReady = () => {
+    checkInOrOut();
     console.log('ready ' + new Date());
-    map.call('Overlays.load', Longdo.object('Overlays.Object', 'A00146852', 'LONGDO'));
-    loc = { lon: this.state.longitude, lat: this.state.latitude };
-    home = Longdo.object('Marker', loc, { detail: 'Home' });
+    map.call(
+      'Overlays.load',
+      Longdo.object('Overlays.Object', 'A00146852', 'LONGDO'),
+    );
+    const {longitude, latitude} = location;
+    const loc = {lon: longitude, lat: latitude};
+    const home = Longdo.object('Marker', loc, {detail: 'Home'});
+    homeRef.current = home;
     map.call('Overlays.add', home);
-  }
+  };
 
-  onOverlayClick = (data) => {
-    if (Longdo.isSameObject(data, home)) {
+  const onOverlayClick = data => {
+    if (Longdo.isSameObject(data, homeRef.current)) {
       console.log('At Home');
     }
     map.call('Overlays.list').then(console.log);
-  }
+  };
 
-  _getLocation = () => {
-    Geolocation.getCurrentPosition(
-      (position) => {
-        this.setState({ latitude: position.coords.latitude, longitude: position.coords.longitude });
-        // console.log(this.state)
-      },
-      (error) => {
-        console.log('error')
-      },
-    )
-  }
+  const navigateToScreen = async routeName => {
+    let ID = await AsyncStorage.getItem('ID');
+    ID = JSON.parse(ID)
+    const loc = await map.call('location');
+    navigation.navigate(routeName, {data: ID, location: loc});
+  };
 
-  navigateToScreen = async (routeName) => {
-    const ID = await AsyncStorage.getItem('ID');
-    this.props.navigation.navigate(routeName, { data: ID });
-  }
+  const checkInOrOut = async () => {
+    let ID = await AsyncStorage.getItem('ID');
+    ID = JSON.parse(ID)
+    const dateTime = new Date();
+    const year = dateTime.getFullYear();
+    const month = String(dateTime.getMonth() + 1).padStart(2, '0');
+    const day = String(dateTime.getDate()).padStart(2, '0');
+    const date = `${year}-${month}-${day}`;
+    // console.log(ID, date);
+    Service.Check_InorOut(ID, date)
+    .then(response => {
+      // console.log(response.data);
+      setCheck(response.data);
+    })
+    .catch(error => console.error(error));
+  };
 
-  onPressTest2 = async () => {
-    let location = await map.call('location');
-    alert('Longitude : ' + location.lon + '\n' + 'Latitude : ' + location.lat);
-  }
-
-  render() {
-    this._getLocation()
-    return (
-      <SafeAreaView style={styles.container}>
-        <Longdo.MapView
-          ref={r => (map = r)}
-          layer={Longdo.static('Layers', 'GRAY')}
-          zoom={18}
-          zoomRange={{min: 15, max: 20}}
-          location={{ lon: this.state.longitude, lat: this.state.latitude }}
-          // ui={false}
-          lastView={false}
-          // language={'en'}
-          onReady={this.onReady}
-          onOverlayClick={this.onOverlayClick}
-        />
-        {/* <Button
-          onPress={onPressTest1}
-          title="Home"
-        /> */}
+  return (
+    <SafeAreaView style={styles.container}>
+      <Longdo.MapView
+        ref={r => (map = r)}
+        layer={Longdo.static('Layers', 'GRAY')}
+        zoom={18}
+        zoomRange={{min: 15, max: 20}}
+        location={location && {lon: location.longitude, lat: location.latitude}}
+        onReady={onReady}
+        onOverlayClick={onOverlayClick}
+      />
+      {check !== "Have" ? (
         <Button
-          onPress={this.onPressTest2}
-          title="Where am I"
+          onPress={() => navigateToScreen('CheckIn')}
+          title="ลงชื่อเข้างาน"
         />
+      ) : null}
+      {check == "Have" ? (
         <Button
-          onPress={() => this.navigateToScreen('Auth')}
-          title="Check in"
+          onPress={() => navigateToScreen('CheckOut')}
+          title="ลงชื่อออกงาน"
         />
-      </SafeAreaView>
-    );
-  }
+      ) : null}
+    </SafeAreaView>
+  );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    // alignItems: 'center', // center not working, use stretch (default value)
     justifyContent: 'center',
     paddingTop: Platform.OS === 'android' ? 25 : 0,
   },

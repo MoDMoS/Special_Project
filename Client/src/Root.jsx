@@ -50,7 +50,7 @@ class Root extends Component {
       position => {
         const {latitude, longitude, accuracy} = position.coords;
         console.log(position.coords)
-        if (accuracy > 50) {
+        if (accuracy > 35) {
           this.setState({mockLocationEnabled: true});
           console.log('Mock location detected');
         } else {

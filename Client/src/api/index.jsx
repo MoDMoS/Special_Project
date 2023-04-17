@@ -39,7 +39,45 @@ const RegisAuthAPI = async formData => {
 const AuthAPI = async formData => {
   const url = REACT_APP_FACE_API_URL + '/verify';
 
+  // console.log(formData);
   return axios.post(url, formData);
+};
+
+const Check_InorOut = async (empID, date) => {
+  const url = REACT_APP_API_URL + '/api/check_InOrOut';
+
+  return axios.post(url, {
+    EmpID: empID,
+    Date: date
+  }, {
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  });
+}
+
+const CheckIn = async (empID, date, time, location, model) => {
+  const url = REACT_APP_API_URL + '/api/checkin';
+
+  return axios.post(url, {
+    EmpID: empID,
+    Date: date,
+    Time: time,
+    Location: location,
+    Model: model,
+  });
+};
+
+const CheckOut = async (empID, date, time, location, model) => {
+  const url = REACT_APP_API_URL + '/api/checkout';
+
+  return axios.post(url, {
+    EmpID: empID,
+    Date: date,
+    Time: time,
+    Location: location,
+    Model: model,
+  });
 };
 
 const ContactsAPI = async () => {
@@ -59,6 +97,9 @@ const Service = {
   CheckAccountAPI,
   RegisAuthAPI,
   AuthAPI,
+  Check_InorOut,
+  CheckIn,
+  CheckOut,
   NewsAPI,
   NewsPinAPI,
   ContactsAPI,
