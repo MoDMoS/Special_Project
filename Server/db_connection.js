@@ -81,7 +81,7 @@ app.post('/api/checkaccount', function (req, res) {
 })
 
 app.post('/api/upload', upload.single('picture'), (req, res) => {
-    console.log(req.file);
+    // console.log(req.file);
     if (!req.file) {
         return res.status(400).send('No file uploaded');
     }
@@ -130,6 +130,63 @@ app.post('/api/upload', upload.single('picture'), (req, res) => {
         }
     });
 });
+
+app.post('/api/check_InOrOut', async (req, res) => {
+    let empID = req.body.EmpID;
+    let date = req.body.Date;
+    try {
+        connection.query("SELECT `EmployeeID`, `CheckInDate` FROM `checkin` WHERE `EmployeeID` = '" + empID + "' and `CheckInDate` = '" + date + `'`, (err, result, fields) => {
+            if (err) {
+                console.log(err);
+                return res.status(400).send()
+            }
+            return res.status(200).send("Have")
+        })
+    } catch (err) {
+        console.log(err);
+        return res.status(500).send()
+    }
+})
+
+app.post('/api/checkin', function (req, res) {
+    let empID = req.body.EmpID;
+    let date = req.body.Date;
+    let time = req.body.Time;
+    let location = req.body.Location;
+    let model = req.body.Model
+    try {
+        connection.query("INSERT INTO `checkin`(`EmployeeID`, `CheckInDate`, `CheckInTime`, `Location`, `Model`) VALUES (" + `'` + empID + `','` + date + `','` + time + `','` + location + `','` + model + `')`, (err, result, fields) => {
+            if (err) {
+                console.log(err);
+                return res.status(400).send()
+            }
+            return res.status(200).json(result)
+        })
+    } catch (err) {
+        console.log(err);
+        return res.status(500).send()
+    }
+})
+
+app.post('/api/checkout', function (req, res) {
+    let empID = req.body.EmpID;
+    let date = req.body.Date;
+    let time = req.body.Time;
+    let location = req.body.Location;
+    let model = req.body.Model
+    try {
+        connection.query("INSERT INTO `checkout`(`EmployeeID`, `CheckOutDate`, `CheckOutTime`, `Location`, `Model`) VALUES (" + `'` + empID + `','` + date + `','` + time + `','` + location + `','` + model + `')`, (err, result, fields) => {
+            if (err) {
+                console.log(err);
+                return res.status(400).send()
+            }
+            return res.status(200).json(result)
+        })
+    } catch (err) {
+        console.log(err);
+        return res.status(500).send()
+    }
+})
 
 app.get('/api/news', async (req, res) => {
     try {
