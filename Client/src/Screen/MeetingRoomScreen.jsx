@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, TouchableOpacity, StyleSheet, Text, Button, ScrollView, Alert } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { useIsFocused, useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import Service from '../api';
@@ -18,7 +18,6 @@ const MeetingRoomScreen = () => {
   const [endFormatted, setEndFormatted] = useState('')
   const [haveBooking, setHaveBooking] = useState(false);
   const navigation = useNavigation();
-  const isFocused = useIsFocused();
 
   const minimumTime = new Date();
   minimumTime.setHours(9, 0, 0);
@@ -34,12 +33,7 @@ const MeetingRoomScreen = () => {
     if (end < minEndTime) {
       setEnd(minEndTime);
     }
-    if (isFocused) {
-      setMeetingRooms([])
-      setShow(false)
-      console.log('Screen reloaded');
-    }
-  }, [start, isFocused]);
+  }, [start]);
 
   const onChangeTextDate = (event, selectedDate) => {
     const currentDate = selectedDate || date;

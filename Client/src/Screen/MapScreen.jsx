@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { StyleSheet, Button, SafeAreaView } from 'react-native';
 import Longdo from 'longdo-map-react-native';
 import Geolocation from '@react-native-community/geolocation';
-import { useIsFocused, useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import Service from '../api';
@@ -15,7 +15,6 @@ export default function MapScreen({ route }) {
   const [check, setCheck] = useState(null);
   const navigation = useNavigation();
   const homeRef = useRef(null);
-  const isFocused = useIsFocused();
 
   useEffect(() => {
     Geolocation.getCurrentPosition(
@@ -29,13 +28,7 @@ export default function MapScreen({ route }) {
         console.log('error');
       },
     );
-
-    if (isFocused) {
-      // Reload the screen
-      console.log('Screen reloaded');
-      checkInOrOut();
-    }
-  }, [isFocused]);
+  }, []);
 
   const onReady = () => {
     console.log('ready ' + new Date());
