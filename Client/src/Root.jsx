@@ -2,11 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Geolocation from '@react-native-community/geolocation';
+import {Alert} from 'react-native';
+import { LogBox } from 'react-native';
 
 import LoginStack from './Navigation/LoginStack';
 import HomeStack from './Navigation/HomeStack';
 import PincodeScreen from './Screen/PincodeScreen';
-import { LogBox } from 'react-native';
 
 const Drawer = createDrawerNavigator();
 LogBox.ignoreAllLogs();
@@ -83,7 +84,7 @@ const Root = () => {
             headerTitle: '',
             unmountOnBlur: true
           }}
-          initialParams={{ initialRouteName: 'Home' }} 
+          initialParams={{ initialRouteName: 'Home' }}
         />
         <Drawer.Screen
           name="Message"
@@ -93,7 +94,7 @@ const Root = () => {
             headerTitle: '',
             unmountOnBlur: true
           }}
-          initialParams={{ initialRouteName: 'MessageStack' }} 
+          initialParams={{ initialRouteName: 'MessageStack' }}
         />
         <Drawer.Screen
           name="Map"
@@ -103,7 +104,7 @@ const Root = () => {
             headerTitle: '',
             unmountOnBlur: true
           }}
-          initialParams={{ initialRouteName: 'MapStack' }} 
+          initialParams={{ initialRouteName: 'MapStack' }}
         />
         <Drawer.Screen
           name="Meeting"
@@ -113,7 +114,7 @@ const Root = () => {
             headerTitle: '',
             unmountOnBlur: true
           }}
-          initialParams={{ initialRouteName: 'MeetingStack' }} 
+          initialParams={{ initialRouteName: 'MeetingStack' }}
         />
         <Drawer.Screen
           name="Contact"
@@ -123,7 +124,7 @@ const Root = () => {
             headerTitle: '',
             unmountOnBlur: true
           }}
-          initialParams={{ initialRouteName: 'Contacts' }} 
+          initialParams={{ initialRouteName: 'Contacts' }}
         />
         <Drawer.Screen
           name="Report"
@@ -133,7 +134,7 @@ const Root = () => {
             headerTitle: '',
             unmountOnBlur: true
           }}
-          initialParams={{ initialRouteName: 'MapStack', initialRouteName2: 'Reports' }} 
+          initialParams={{ initialRouteName: 'MapStack', initialRouteName2: 'Reports' }}
         />
         <Drawer.Screen
           name="BookingCheck"
@@ -143,12 +144,12 @@ const Root = () => {
             headerTitle: '',
             unmountOnBlur: true
           }}
-          initialParams={{ initialRouteName: 'MeetingStack', initialRouteName2: 'Apporval' }} 
+          initialParams={{ initialRouteName: 'MeetingStack', initialRouteName2: 'Apporval' }}
         />
       </Drawer.Navigator>
     );
   } else {
-    return null;
+    return Alert.alert('Mock location detected')
   }
 };
 
