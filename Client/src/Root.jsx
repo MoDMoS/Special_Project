@@ -5,14 +5,11 @@ import Geolocation from '@react-native-community/geolocation';
 
 import LoginStack from './Navigation/LoginStack';
 import HomeStack from './Navigation/HomeStack';
-import MessageStack from './Navigation/MessageStack';
-import MapStack from './Navigation/MapStack';
-import MeetingScreen from './Screen/MeetingRoomScreen';
-import ContactScreen from './Screen/ContactScreen';
 import PincodeScreen from './Screen/PincodeScreen';
-import ReportsScreen from './Screen/ReportsScreen';
+import { LogBox } from 'react-native';
 
 const Drawer = createDrawerNavigator();
+LogBox.ignoreAllLogs();
 
 const Root = () => {
   const [initialScreen, setInitialScreen] = useState(null);

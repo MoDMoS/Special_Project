@@ -3,11 +3,12 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Table, Row, Rows } from 'react-native-table-component';
 import Service from '../api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/native';
 
 const ReportsScreen = () => {
-  const [checkinData, setCheckinData] = useState([]);
   const [ID, setID] = useState('');
   const [tableData, setTableData] = useState([]);
+  const navigation = useNavigation();
 
   const getID = async () => {
     const ID = await AsyncStorage.getItem('ID');
@@ -20,10 +21,9 @@ const ReportsScreen = () => {
     if (ID) {
       Service.ReportsAPI(ID)
         .then(response => {
-          setCheckinData(response.data);
           // Create the data table
           const data = [];
-          console.log(response.data)
+          // console.log(response.data)
           response.data.forEach(item => {
             data.push([item.CheckInDate, item.CheckInTime, item.CheckOutTime, item.ShiftDuration]);
           });
