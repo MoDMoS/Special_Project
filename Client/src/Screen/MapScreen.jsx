@@ -2,7 +2,7 @@ import React, {useState, useEffect, useRef} from 'react';
 import {StyleSheet, Button, SafeAreaView} from 'react-native';
 import Longdo from 'longdo-map-react-native';
 import Geolocation from '@react-native-community/geolocation';
-import {useNavigation} from '@react-navigation/native';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import Service from '../api';
@@ -15,6 +15,7 @@ export default function MapScreen({route}) {
   const [check, setCheck] = useState(null);
   const navigation = useNavigation();
   const homeRef = useRef(null);
+  const isFocused = useIsFocused();
 
   useEffect(() => {
     Geolocation.getCurrentPosition(
@@ -28,10 +29,15 @@ export default function MapScreen({route}) {
         console.log('error');
       },
     );
-  }, []);
+
+    if (isFocused) {
+      // Reload the screen
+      console.log('Screen reloaded');
+      checkInOrOut();
+    }
+  }, [isFocused]);
 
   const onReady = () => {
-    checkInOrOut();
     console.log('ready ' + new Date());
     map.call(
       'Overlays.load',
@@ -69,8 +75,8 @@ export default function MapScreen({route}) {
     // console.log(ID, date);
     Service.Check_InorOut(ID, date)
     .then(response => {
-      // console.log(response.data);
-      setCheck(response.data);
+      // console.log(JSON.stringify(response.data) == "[]");
+      setCheck(JSON.stringify(response.data));
     })
     .catch(error => console.error(error));
   };
@@ -86,13 +92,13 @@ export default function MapScreen({route}) {
         onReady={onReady}
         onOverlayClick={onOverlayClick}
       />
-      {check !== "Have" ? (
+      {check == "[]" ? (
         <Button
           onPress={() => navigateToScreen('CheckIn')}
           title="ลงชื่อเข้างาน"
         />
       ) : null}
-      {check == "Have" ? (
+      {check !== "[]" ? (
         <Button
           onPress={() => navigateToScreen('CheckOut')}
           title="ลงชื่อออกงาน"

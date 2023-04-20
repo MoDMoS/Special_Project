@@ -1,16 +1,22 @@
 import axios from 'axios';
-import {REACT_APP_API_URL, REACT_APP_FACE_API_URL} from '@env';
+import { REACT_APP_API_URL, REACT_APP_FACE_API_URL } from '@env';
+
+const LoginAPI = async (empid) => {
+  const url = REACT_APP_API_URL + '/api/login';
+
+  return axios.post(url, { EmpID: empid });
+};
 
 const CheckUserAPI = async (email, id) => {
   const url = REACT_APP_API_URL + '/api/checkuser';
 
-  return axios.post(url, {email: email, id: id});
+  return axios.post(url, { email: email, id: id });
 };
 
 const CheckAccountAPI = async EmpID => {
   const url = REACT_APP_API_URL + '/api/checkaccount';
 
-  return axios.post(url, {EmpID: EmpID});
+  return axios.post(url, { EmpID: EmpID });
 };
 
 const NewsAPI = async () => {
@@ -28,12 +34,7 @@ const NewsPinAPI = async () => {
 const RegisAuthAPI = async formData => {
   const url = REACT_APP_API_URL + '/api/upload';
 
-  return axios.post(url, formData, {
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'multipart/form-data',
-    },
-  });
+  return axios.post(url, formData, { headers: { Accept: 'application/json', 'Content-Type': 'multipart/form-data' } });
 };
 
 const AuthAPI = async formData => {
@@ -46,38 +47,19 @@ const AuthAPI = async formData => {
 const Check_InorOut = async (empID, date) => {
   const url = REACT_APP_API_URL + '/api/check_InOrOut';
 
-  return axios.post(url, {
-    EmpID: empID,
-    Date: date
-  }, {
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  });
+  return axios.post(url, { EmpID: empID, Date: date }, { headers: { 'Content-Type': 'application/json' } });
 }
 
 const CheckIn = async (empID, date, time, location, model) => {
   const url = REACT_APP_API_URL + '/api/checkin';
 
-  return axios.post(url, {
-    EmpID: empID,
-    Date: date,
-    Time: time,
-    Location: location,
-    Model: model,
-  });
+  return axios.post(url, { EmpID: empID, Date: date, Time: time, Location: location, Model: model });
 };
 
 const CheckOut = async (empID, date, time, location, model) => {
   const url = REACT_APP_API_URL + '/api/checkout';
 
-  return axios.post(url, {
-    EmpID: empID,
-    Date: date,
-    Time: time,
-    Location: location,
-    Model: model,
-  });
+  return axios.post(url, { EmpID: empID, Date: date, Time: time, Location: location, Model: model });
 };
 
 const ContactsAPI = async () => {
@@ -86,13 +68,26 @@ const ContactsAPI = async () => {
   return axios.get(url);
 };
 
+const MeetingAPI = async ( date, start, end ) => {
+  const url = REACT_APP_API_URL + '/api/meeting';
+
+  return axios.post(url, { Date: date, Start: start, End: end });
+};
+
+const BookingAPI = async ( roomid, topic, empid, date, start, end ) => {
+  const url = REACT_APP_API_URL + '/api/booking';
+
+  return axios.post(url, { RoomID: roomid, Topic: topic, EmpID: empid, Date: date, Start: start, End: end });
+};
+
 const ReportsAPI = async EmpID => {
   const url = REACT_APP_API_URL + '/api/reports';
 
-  return axios.post(url, {EmpID: EmpID});
+  return axios.post(url, { EmpID: EmpID });
 };
 
 const Service = {
+  LoginAPI,
   CheckUserAPI,
   CheckAccountAPI,
   RegisAuthAPI,
@@ -103,6 +98,8 @@ const Service = {
   NewsAPI,
   NewsPinAPI,
   ContactsAPI,
+  MeetingAPI,
+  BookingAPI,
   ReportsAPI,
 };
 

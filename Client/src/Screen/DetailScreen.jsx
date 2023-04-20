@@ -1,4 +1,4 @@
-import {useRoute} from '@react-navigation/native';
+import { useRoute } from '@react-navigation/native';
 import React from 'react';
 import {
   StyleSheet,
@@ -8,7 +8,7 @@ import {
   ScrollView,
 } from 'react-native';
 
-export default function DetailScreen({navigation}) {
+export default function DetailScreen({ navigation }) {
   const route = useRoute();
 
   const news = route.params.itemId;
@@ -18,13 +18,13 @@ export default function DetailScreen({navigation}) {
       <ScrollView>
         <Text style={styles.title}>{news.NewsTitle}</Text>
         <Text style={styles.detail}>{news.NewsDetail}</Text>
-        
+
       </ScrollView>
       <TouchableOpacity
-          style={styles.button}
-          onPress={() => navigation.navigate('Message')}>
-          <Text style={styles.buttonText}>Go Back</Text>
-        </TouchableOpacity>
+        style={styles.button}
+        onPress={() => navigation.navigate('Message')}>
+        <Text style={styles.buttonText}>Go Back</Text>
+      </TouchableOpacity>
     </View>
   );
 }

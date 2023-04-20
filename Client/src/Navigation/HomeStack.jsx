@@ -1,14 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { useNavigation } from '@react-navigation/native';
 
 import HomeScreen from '../Screen/HomeScreen';
-import MeetingScreen from '../Screen/MeetingRoomScreen';
 import ContactScreen from '../Screen/ContactScreen';
 import MapStack from './MapStack';
 import MessageStack from './MessageStack';
-import DetailScreen from '../Screen/DetailScreen';
+import MeetingStack from './MeetingStack';
 
 const Tab = createBottomTabNavigator();
 
@@ -32,6 +32,7 @@ export default function HomeStack() {
           tabBarIcon: ({color}) => (
             <MaterialCommunityIcons name="home" color={color} size={35} />
           ),
+          unmountOnBlur: true
         }}
       />
       <Tab.Screen
@@ -49,6 +50,7 @@ export default function HomeStack() {
               size={35}
             />
           ),
+          unmountOnBlur: true
         }}
       />
       <Tab.Screen
@@ -66,11 +68,12 @@ export default function HomeStack() {
               size={35}
             />
           ),
+          unmountOnBlur: true
         }}
       />
       <Tab.Screen
-        name="Meeting"
-        component={MeetingScreen}
+        name="MeetingStack"
+        component={MeetingStack}
         options={{
           tabBarLabel: 'จองห้องประชุม',
           tabBarLabelStyle: {
@@ -79,6 +82,7 @@ export default function HomeStack() {
           tabBarIcon: ({color}) => (
             <MaterialIcons name="meeting-room" color={color} size={35} />
           ),
+          unmountOnBlur: true
         }}
       />
       <Tab.Screen
@@ -92,6 +96,7 @@ export default function HomeStack() {
           tabBarIcon: ({color}) => (
             <MaterialIcons name="contact-phone" color={color} size={35} />
           ),
+          unmountOnBlur: true
         }}
       />
     </Tab.Navigator>

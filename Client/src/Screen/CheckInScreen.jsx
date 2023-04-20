@@ -4,7 +4,6 @@ import {TouchableOpacity, Text, View, Alert, ActivityIndicator} from 'react-nati
 import {REACT_APP_KEY_API_MAP} from '@env';
 import {useNavigation} from '@react-navigation/native';
 import Longdo from 'longdo-map-react-native';
-import d from 'geolocation-utils';
 import DeviceInfo from 'react-native-device-info';
 
 import Service from '../api';
@@ -25,11 +24,8 @@ const CheckInScreen = ({route}) => {
     if (!faceDetected) {
       const location = route.params.location;
       const circleCenter = {lat: 13.853913193936197, lon: 100.38877181554058};
-      const isInsideCircle = isLocationInsideCircle(
-        location,
-        circleCenter,
-        800,
-      );
+      // const circleCenter = {lat: 13.821602612664261, lon: 100.51497715303887};
+      const isInsideCircle = isLocationInsideCircle( location, circleCenter, 800 );
       if (isInsideCircle) {
         takePicture(faces);
       } else {

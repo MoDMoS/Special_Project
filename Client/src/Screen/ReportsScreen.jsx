@@ -36,12 +36,7 @@ const ReportsScreen = () => {
   return (
     <View style={styles.container}>
       <Table>
-        <Row
-          data={['วันที่','เวลาเข้างาน', 'เวลาออกงาน']}
-          style={styles.head}
-          textStyle={styles.text}
-        />
-        
+        <Row data={['วันที่','เวลาเข้างาน', 'เวลาออกงาน']} style={styles.head} textStyle={styles.text}/>
         <Rows data={tableData} textStyle={{fontSize: 16, color: 'black', fontWeight: 'bold'}} />
       </Table>
     </View>

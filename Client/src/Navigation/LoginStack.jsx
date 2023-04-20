@@ -12,21 +12,11 @@ const Stack = createStackNavigator();
 export default function LoginStack() {
     return (
         <Stack.Navigator screenOptions={{ headerShown: false }}>
-            <Stack.Screen name="LoginScreen"
-                component={LoginScreen}
-            />
-            <Stack.Screen name="RefScreen"
-                component={RefScreen}
-            />
-            <Stack.Screen name="RegisScreen"
-                component={RegisScreen}
-            />
-            <Stack.Screen name="RegisPincode"
-                component={RegisPincodeScreen}
-            />
-            <Stack.Screen name="RegisAuth"
-                component={RegisAuthScreen}
-            />
+            <Stack.Screen name="LoginScreen" component={LoginScreen} />
+            <Stack.Screen name="RefScreen" component={RefScreen} />
+            <Stack.Screen name="RegisScreen" component={RegisScreen} />
+            <Stack.Screen name="RegisPincode" component={RegisPincodeScreen} />
+            <Stack.Screen name="RegisAuth" component={RegisAuthScreen} />
         </Stack.Navigator>
     );
 }

@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { View, TouchableOpacity, StyleSheet, Text, Button, ScrollView } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { useIsFocused, useNavigation } from '@react-navigation/native';
-
 import Service from '../api';
+import { useNavigation } from '@react-navigation/native';
 
 const MeetingRoomScreen = () => {
   const [meetingRooms, setMeetingRooms] = useState([]);
@@ -12,11 +11,8 @@ const MeetingRoomScreen = () => {
   const [end, setEnd] = useState(new Date());
   const [minStartTime, setMinStartTime] = useState(new Date());
   const [minEndTime, setMinEndTime] = useState(new Date());
-  const [show, setShow] = useState(false);
-  const [startFormatted, setStartFormatted] = useState('')
-  const [endFormatted, setEndFormatted] = useState('')
+  const [show, setShow] = useState(null);
   const navigation = useNavigation();
-  const isFocused = useIsFocused();
 
   const minimumTime = new Date();
   minimumTime.setHours(9, 0, 0);
@@ -32,49 +28,56 @@ const MeetingRoomScreen = () => {
     if (end < minEndTime) {
       setEnd(minEndTime);
     }
-    if (isFocused) {
-      setMeetingRooms([])
-      setShow(false)
-      console.log('Screen reloaded');
-    }
-  }, [start, isFocused]);
+  }, [start]);
+
+  const formatDate = date => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+
+  const formatTime = date => {
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    return `${hours < 10 ? '0' + hours : hours}:${minutes < 10 ? '0' + minutes : minutes
+      }`;
+  };
+
+  const [textDate, setTextDate] = useState(formatDate(date));
+  const [textStart, setStartTime] = useState(formatTime(date));
+  const [textEnd, setEndTime] = useState(formatTime(end));
 
   const onChangeTextDate = (event, selectedDate) => {
     const currentDate = selectedDate || date;
-    setDate(currentDate);
+    console.log(currentDate);
+    setTextDate(currentDate)
+    console.log(textDate);
   };
 
-  const onChangeStartTime = (event, selectedTime) => {
-    const selectedDate = selectedTime || start;
-    if (selectedDate < minimumTime) {
-      minimumTime.setFullYear(selectedDate.getFullYear());
-      minimumTime.setMonth(selectedDate.getMonth());
-      minimumTime.setDate(selectedDate.getDate());
-      setStart(selectedDate);
-      setMinStartTime(selectedDate);
-      const formattedTime = selectedDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-      setStartFormatted(formattedTime);
+  const onChangeStartTime = (event, time) => {
+    const currentStart = time || start;
+    if (currentStart < minimumTime) {
+      minimumTime.setFullYear(currentStart.getFullYear());
+      minimumTime.setMonth(currentStart.getMonth());
+      minimumTime.setDate(currentStart.getDate());
+      // setStart(minimumTime);
+      setStartTime(minimumTime);
     } else {
-      setStart(selectedDate);
-      const formattedTime = selectedDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-      setStartFormatted(formattedTime);
+      // setStart(currentStart);
+      setStartTime(currentStart);
+      // console.log(textStart);
     }
   };
 
-  const onChangeEndTime = (event, selectedTime) => {
-    const selectedDate = selectedTime || end;
-    setEnd(selectedDate);
-    const formattedTime = selectedDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-    setEndFormatted(formattedTime);
+  const onChangeEndTime = (event, time) => {
+    const currentEnd = time || end;
+    setEndTime(currentEnd);
   };
 
   const handleSubmit = () => {
-    const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
-    const startTime = startFormatted || start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-    const endTime = endFormatted || end.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-    Service.MeetingAPI(formattedDate, startTime, endTime)
+    Service.MeetingAPI(textDate, textStart, textEnd)
       .then((response) => {
-        // console.log(response.data);
         setMeetingRooms(response.data)
         setShow(true)
       })
@@ -84,10 +87,7 @@ const MeetingRoomScreen = () => {
   };
 
   handleItemPress = (itemId) => {
-    const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
-    const startTime = startFormatted || start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-    const endTime = endFormatted || end.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-    navigation.navigate('Booking', { RoomID: itemId.RoomID, RoomName: itemId.RoomName, Date: formattedDate, Start: startTime, End: endTime });
+    navigation.navigate('Booking', { RoomName: itemId.RoomName, Date: textDate, Start: textStart, End: textEnd });
   }
 
   return (
@@ -95,6 +95,7 @@ const MeetingRoomScreen = () => {
       <View style={styles.row}>
         <Text>วันที่ต้องการจอง</Text>
         <DateTimePicker
+          // testID="dateTimePicker"
           value={date}
           mode={'date'}
           is24Hour={true}
@@ -113,6 +114,7 @@ const MeetingRoomScreen = () => {
           display="default"
           onChange={onChangeStartTime}
           minimumDate={minStartTime}
+          maximumDate={maxStartTime}
         />
         <DateTimePicker
           value={end}
@@ -121,10 +123,11 @@ const MeetingRoomScreen = () => {
           display="default"
           onChange={onChangeEndTime}
           minimumDate={minEndTime}
+          maximumDate={maxEndTime}
         />
       </View>
       <View>
-        <TouchableOpacity
+          <TouchableOpacity
           style={styles.button}
           activeOpacity={0.5}
           onPress={handleSubmit}
@@ -132,27 +135,19 @@ const MeetingRoomScreen = () => {
           <Text style={styles.buttonTextStyle}>ยืนยัน</Text>
         </TouchableOpacity>
       </View>
-      <View>
-        {show == true ? (
-          <ScrollView>
-            {Array.isArray(meetingRooms) && meetingRooms.map((room, index) => (
-              <TouchableOpacity
-                key={index}
-                style={styles.roomContainer}
-                onPress={() => this.handleItemPress(room)}
-              >
-                <Text style={styles.roomName}>{room.RoomName}</Text>
-              </TouchableOpacity>
-            ))}
-          </ScrollView>
-        ) : null}
-        {show == false ? (
-          <View>
-            <Text style={styles.roomName}>กรุณาเลือกวันและเวลาที่ต้องการจอง</Text>
-          </View>
-        ) : null}
-      </View>
-
+      {show == true ? (
+        <ScrollView>
+          {Array.isArray(meetingRooms) && meetingRooms.map((room, index) => (
+            <TouchableOpacity
+              key={index}
+              style={styles.roomContainer}
+              onPress={() => this.handleItemPress(room)}
+            >
+              <Text style={styles.roomName}>{room.RoomName}</Text>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
+      ) : null}
     </View>
   );
 };
@@ -175,15 +170,6 @@ const styles = StyleSheet.create({
     // justifyContent: 'center',
     alignItems: 'center',
     marginTop: 10,
-  },
-  input: {
-    width: '95%',
-    padding: 10,
-    margin: 10,
-    borderWidth: 1,
-    borderColor: 'black',
-    backgroundColor: 'white',
-    borderRadius: 30,
   },
   button: {
     backgroundColor: 'blue',

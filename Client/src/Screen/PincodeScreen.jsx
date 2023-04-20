@@ -1,15 +1,11 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
-import {
-  View,
-  TextInput,
-  StyleSheet,
-  TouchableOpacity,
-  Text,
-  Alert,
-} from 'react-native';
+import { View, TextInput, StyleSheet, TouchableOpacity, Text, Alert } from 'react-native';
+import Service from '../api';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const PincodeScreen = ({route}) => {
+
+const PincodeScreen = ({ route }) => {
   const navigation = useNavigation();
 
   const [pin, setPin] = useState('');
@@ -25,7 +21,7 @@ const PincodeScreen = ({route}) => {
       newPin[index] = value;
     }
     setPin(newPin.join(''));
-  
+
     // move focus to the previous or next input box
     if (value !== '' && index < 3) {
       refs[index + 1].focus();
@@ -33,12 +29,21 @@ const PincodeScreen = ({route}) => {
       refs[index - 1].focus();
     }
   };
-  
+
 
   const handleSubmit = () => {
     if (pin.length === 4) {
       if (JSON.stringify(pin) === data.pincode) {
-        navigation.navigate('HomeStack', {data: data.empId});
+        Service.LoginAPI()
+          .then((response) => {
+            // console.log(response.data.access_token);
+            AsyncStorage.setItem('keys', JSON.stringify(response.data.access_token));
+            navigation.navigate('HomeStack', { data: data.empId });
+          })
+          .catch((err) => {
+            console.log(err);
+          })
+        
       }
     } else {
       Alert.alert('Please enter pincode');
@@ -50,8 +55,8 @@ const PincodeScreen = ({route}) => {
   return (
     <View style={styles.container}>
       <View style={styles.column}>
-        <Text style={{fontSize: 50, marginTop: 200}}>Pin Code</Text>
-        <Text style={{fontSize: 20}}>ใส่รหัสผ่านเพื่อเข้าใช้งานแอพ</Text>
+        <Text style={{ fontSize: 50, marginTop: 200 }}>Pin Code</Text>
+        <Text style={{ fontSize: 20 }}>ใส่รหัสผ่านเพื่อเข้าใช้งานแอพ</Text>
         <View style={styles.row}>
           <TextInput
             ref={ref => (refs[0] = ref)}
