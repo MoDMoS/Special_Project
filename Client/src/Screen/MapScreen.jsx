@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { StyleSheet, Button, SafeAreaView } from 'react-native';
+import { StyleSheet, Button, SafeAreaView, TouchableOpacity } from 'react-native';
 import Longdo from 'longdo-map-react-native';
 import Geolocation from '@react-native-community/geolocation';
 import { useNavigation } from '@react-navigation/native';

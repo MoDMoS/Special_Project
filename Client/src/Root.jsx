@@ -149,7 +149,7 @@ const Root = () => {
       </Drawer.Navigator>
     );
   } else {
-    return Alert.alert('Mock location detected')
+    return 
   }
 };
 
