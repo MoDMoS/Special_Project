@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native';
@@ -12,13 +12,20 @@ import MeetingStack from './MeetingStack';
 
 const Tab = createBottomTabNavigator();
 
-export default function HomeStack() {
+export default function HomeStack({ navigation, route }) {
+  const { initialRouteName, initialRouteName2 } = route.params;
+
+  useEffect(() => {
+    
+  })
+
   return (
     <Tab.Navigator
+      initialRouteName={initialRouteName}
       screenOptions={{
         headerShown: false,
         tabBarStyle: {
-          height: 85, // change the height to your desired value
+          height: 85,
         },
       }}>
       <Tab.Screen
@@ -27,9 +34,9 @@ export default function HomeStack() {
         options={{
           tabBarLabel: 'หน้าแรก',
           tabBarLabelStyle: {
-            fontSize: 14, 
+            fontSize: 14,
           },
-          tabBarIcon: ({color}) => (
+          tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons name="home" color={color} size={35} />
           ),
           unmountOnBlur: true
@@ -41,9 +48,9 @@ export default function HomeStack() {
         options={{
           tabBarLabel: 'ข่าวสาร',
           tabBarLabelStyle: {
-            fontSize: 14, 
+            fontSize: 14,
           },
-          tabBarIcon: ({color}) => (
+          tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons
               name="message-alert"
               color={color}
@@ -59,17 +66,18 @@ export default function HomeStack() {
         options={{
           tabBarLabel: 'ลงเวลางาน',
           tabBarLabelStyle: {
-            fontSize: 14, 
+            fontSize: 14,
           },
-          tabBarIcon: ({color}) => (
+          tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons
               name="account-check"
               color={color}
               size={35}
             />
           ),
-          unmountOnBlur: true
+          unmountOnBlur: true,
         }}
+        initialParams= {{ initialRouteName: initialRouteName2 }}
       />
       <Tab.Screen
         name="MeetingStack"
@@ -77,9 +85,9 @@ export default function HomeStack() {
         options={{
           tabBarLabel: 'จองห้องประชุม',
           tabBarLabelStyle: {
-            fontSize: 12, 
+            fontSize: 12,
           },
-          tabBarIcon: ({color}) => (
+          tabBarIcon: ({ color }) => (
             <MaterialIcons name="meeting-room" color={color} size={35} />
           ),
           unmountOnBlur: true
@@ -91,9 +99,9 @@ export default function HomeStack() {
         options={{
           tabBarLabel: 'ติดต่อ',
           tabBarLabelStyle: {
-            fontSize: 14, 
+            fontSize: 14,
           },
-          tabBarIcon: ({color}) => (
+          tabBarIcon: ({ color }) => (
             <MaterialIcons name="contact-phone" color={color} size={35} />
           ),
           unmountOnBlur: true

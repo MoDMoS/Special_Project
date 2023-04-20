@@ -65,6 +65,7 @@ const Root = () => {
           options={{
             headerShown: false,
             drawerItemStyle: { display: 'none' },
+            unmountOnBlur: true
           }}
         />
         <Drawer.Screen
@@ -74,6 +75,7 @@ const Root = () => {
           options={{
             headerShown: false,
             drawerItemStyle: { display: 'none' },
+            unmountOnBlur: true
           }}
         />
         <Drawer.Screen
@@ -82,42 +84,59 @@ const Root = () => {
           options={{
             title: 'Home',
             headerTitle: '',
+            unmountOnBlur: true
           }}
+          initialParams={{ initialRouteName: 'Home' }} 
         />
         <Drawer.Screen
-          name="MessageStack"
-          component={MessageStack}
+          name="Message"
+          component={HomeStack}
           options={{
             title: 'Message',
+            headerTitle: '',
+            unmountOnBlur: true
           }}
+          initialParams={{ initialRouteName: 'MessageStack' }} 
         />
         <Drawer.Screen
-          name="MapStack"
-          component={MapStack}
+          name="Map"
+          component={HomeStack}
           options={{
             title: 'Check in',
+            headerTitle: '',
+            unmountOnBlur: true
           }}
+          initialParams={{ initialRouteName: 'MapStack' }} 
         />
         <Drawer.Screen
           name="Meeting"
-          component={MeetingScreen}
+          component={HomeStack}
           options={{
             title: 'Meeting room',
+            headerTitle: '',
+            unmountOnBlur: true
           }}
+          initialParams={{ initialRouteName: 'MapStack' }} 
         />
         <Drawer.Screen
-          name="Contacts"
-          component={ContactScreen}
+          name="Contact"
+          component={HomeStack}
           options={{
             title: 'Contacts',
+            headerTitle: '',
+            unmountOnBlur: true
           }}
+          initialParams={{ initialRouteName: 'Contacts' }} 
         />
         <Drawer.Screen
-          name="Reports"
-          component={ReportsScreen}
+          name="Report"
+          component={HomeStack}
           options={{
             title: 'Reports',
+            headerTitle: '',
+            unmountOnBlur: true
           }}
+          initialParams={{ initialRouteName: 'MapStack', initialRouteName2: 'Reports' }} 
         />
       </Drawer.Navigator>
     );

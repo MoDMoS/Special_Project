@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, TouchableOpacity, StyleSheet, Text, Button, ScrollView } from 'react-native';
+import { View, TouchableOpacity, StyleSheet, Text, Button, ScrollView, Alert } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 
@@ -42,16 +42,24 @@ const MeetingRoomScreen = () => {
   const onChangeTextDate = (event, selectedDate) => {
     const currentDate = selectedDate || date;
     setDate(currentDate);
+    const minimumTime = new Date();
+
+    if (currentDate.toDateString() !== new Date().toDateString()) {
+      minimumTime.setHours(9, 0, 0);
+    }
+
+    setMinStartTime(minimumTime);
   };
+
 
   const onChangeStartTime = (event, selectedTime) => {
     const selectedDate = selectedTime || start;
-    if (selectedDate < minimumTime) {
-      minimumTime.setFullYear(selectedDate.getFullYear());
-      minimumTime.setMonth(selectedDate.getMonth());
-      minimumTime.setDate(selectedDate.getDate());
+    if (selectedDate < minStartTime) {
+      minStartTime.setFullYear(selectedDate.getFullYear());
+      minStartTime.setMonth(selectedDate.getMonth());
+      minStartTime.setDate(selectedDate.getDate());
       setStart(selectedDate);
-      setMinStartTime(selectedDate);
+      setMinStartTime(new Date(minStartTime.getTime())); // Make a copy to trigger a state update
       const formattedTime = selectedDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
       setStartFormatted(formattedTime);
     } else {
@@ -60,6 +68,7 @@ const MeetingRoomScreen = () => {
       setStartFormatted(formattedTime);
     }
   };
+
 
   const onChangeEndTime = (event, selectedTime) => {
     const selectedDate = selectedTime || end;
@@ -72,7 +81,12 @@ const MeetingRoomScreen = () => {
     const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
     const startTime = startFormatted || start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
     const endTime = endFormatted || end.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-    Service.MeetingAPI(formattedDate, startTime, endTime)
+    console.log(startTime, endTime);
+    if (new Date(`2000-01-01T${startTime}`) > new Date(`2000-01-01T${endTime}`)) {
+      Alert.alert('เวลาเริ่มไม่สามารถมากกว่าเวลาเลิกได้');
+      return;
+    } else {
+      Service.MeetingAPI(formattedDate, startTime, endTime)
       .then((response) => {
         // console.log(response.data);
         setMeetingRooms(response.data)
@@ -81,6 +95,7 @@ const MeetingRoomScreen = () => {
       .catch((err) => {
         console.log(err);
       })
+    }
   };
 
   handleItemPress = (itemId) => {
@@ -102,6 +117,7 @@ const MeetingRoomScreen = () => {
           onChange={onChangeTextDate}
           locale={'th-TH'}
           minimumDate={new Date()}
+          maximumDate={new Date(Date.now() + (3 * 30 * 24 * 60 * 60 * 1000))}
         />
       </View>
       <View style={styles.row}>
