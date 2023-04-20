@@ -16,7 +16,7 @@ export default function HomeStack({ navigation, route }) {
   const { initialRouteName, initialRouteName2 } = route.params;
 
   useEffect(() => {
-    
+
   })
 
   return (
@@ -92,6 +92,7 @@ export default function HomeStack({ navigation, route }) {
           ),
           unmountOnBlur: true
         }}
+        initialParams= {{ initialRouteName: initialRouteName2 }}
       />
       <Tab.Screen
         name="Contacts"

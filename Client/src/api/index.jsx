@@ -53,13 +53,13 @@ const Check_InorOut = async (empID, date) => {
 const CheckIn = async (empID, date, time, location, model) => {
   const url = REACT_APP_API_URL + '/api/checkin';
 
-  return axios.post(url, { EmpID: empID, Date: date, Time: time, Location: location, Model: model });
+  return axios.post(url, { EmpID: empID, Date: date, Time: time, Location: location, Model: model }, { headers: { 'Content-Type': 'application/json' } });
 };
 
 const CheckOut = async (empID, date, time, location, model) => {
   const url = REACT_APP_API_URL + '/api/checkout';
 
-  return axios.post(url, { EmpID: empID, Date: date, Time: time, Location: location, Model: model });
+  return axios.post(url, { EmpID: empID, Date: date, Time: time, Location: location, Model: model }, { headers: { 'Content-Type': 'application/json' } });
 };
 
 const ContactsAPI = async () => {
@@ -80,10 +80,23 @@ const BookingAPI = async ( roomid, topic, empid, date, start, end ) => {
   return axios.post(url, { RoomID: roomid, Topic: topic, EmpID: empid, Date: date, Start: start, End: end });
 };
 
+const DelBookingAPI = async ( bookingid, date, start, end ) => {
+  const url = REACT_APP_API_URL + '/api/delbooking';
+  console.log(JSON.stringify({ BookingID: bookingid, Date: date, Start: start, End: end }))
+
+  return axios.post(url, JSON.stringify({ BookingID: bookingid, Date: date, Start: start, End: end }), { headers: { 'Content-Type': 'application/json' } });
+};
+
 const ReportsAPI = async EmpID => {
   const url = REACT_APP_API_URL + '/api/reports';
 
   return axios.post(url, { EmpID: EmpID });
+};
+
+const ApporveAPI = async ( empid ) => {
+  const url = REACT_APP_API_URL + '/api/checkbooking';
+
+  return axios.post(url, { EmpID: empid });
 };
 
 const Service = {
@@ -100,7 +113,9 @@ const Service = {
   ContactsAPI,
   MeetingAPI,
   BookingAPI,
+  DelBookingAPI,
   ReportsAPI,
+  ApporveAPI,
 };
 
 export default Service;

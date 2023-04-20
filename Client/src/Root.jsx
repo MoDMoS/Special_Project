@@ -82,7 +82,7 @@ const Root = () => {
           name="HomeStack"
           component={HomeStack}
           options={{
-            title: 'Home',
+            title: 'หน้าแรก',
             headerTitle: '',
             unmountOnBlur: true
           }}
@@ -92,7 +92,7 @@ const Root = () => {
           name="Message"
           component={HomeStack}
           options={{
-            title: 'Message',
+            title: 'ข่าวสาร',
             headerTitle: '',
             unmountOnBlur: true
           }}
@@ -102,7 +102,7 @@ const Root = () => {
           name="Map"
           component={HomeStack}
           options={{
-            title: 'Check in',
+            title: 'ลงเวลางาน',
             headerTitle: '',
             unmountOnBlur: true
           }}
@@ -112,17 +112,17 @@ const Root = () => {
           name="Meeting"
           component={HomeStack}
           options={{
-            title: 'Meeting room',
+            title: 'จองห้องประชุม',
             headerTitle: '',
             unmountOnBlur: true
           }}
-          initialParams={{ initialRouteName: 'MapStack' }} 
+          initialParams={{ initialRouteName: 'MeetingStack' }} 
         />
         <Drawer.Screen
           name="Contact"
           component={HomeStack}
           options={{
-            title: 'Contacts',
+            title: 'ข้อมูลติดต่อ',
             headerTitle: '',
             unmountOnBlur: true
           }}
@@ -132,11 +132,21 @@ const Root = () => {
           name="Report"
           component={HomeStack}
           options={{
-            title: 'Reports',
+            title: 'เช็คประวัติการลงเวลางาน',
             headerTitle: '',
             unmountOnBlur: true
           }}
           initialParams={{ initialRouteName: 'MapStack', initialRouteName2: 'Reports' }} 
+        />
+        <Drawer.Screen
+          name="BookingCheck"
+          component={HomeStack}
+          options={{
+            title: 'เช็คสถานะการจองห้องประชุม',
+            headerTitle: '',
+            unmountOnBlur: true
+          }}
+          initialParams={{ initialRouteName: 'MeetingStack', initialRouteName2: 'Apporval' }} 
         />
       </Drawer.Navigator>
     );

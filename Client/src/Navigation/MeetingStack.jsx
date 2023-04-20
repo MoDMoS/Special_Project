@@ -2,14 +2,18 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import MeetingRoomScreen from '../Screen/MeetingRoomScreen';
 import BookingScreen from '../Screen/BookingScreen';
+import BookingApprovalScreen from '../Screen/BookingApprovalScreen';
 
 const Stack = createStackNavigator();
 
-export default function MeetingStack() {
+export default function MeetingStack({ navigation, route }) {
+  const { initialRouteName } = route.params;
+
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Navigator initialRouteName={initialRouteName} screenOptions={{ headerShown: false }}>
             <Stack.Screen name="Meeting" component={MeetingRoomScreen} />
             <Stack.Screen name="Booking" component={BookingScreen} />
+            <Stack.Screen name="Apporval" component={BookingApprovalScreen} />
     </Stack.Navigator>
   )
 }

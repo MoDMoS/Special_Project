@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, TouchableOpacity, StyleSheet, Text, Button, ScrollView, Alert } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import Service from '../api';
 
@@ -15,6 +16,7 @@ const MeetingRoomScreen = () => {
   const [show, setShow] = useState(false);
   const [startFormatted, setStartFormatted] = useState('')
   const [endFormatted, setEndFormatted] = useState('')
+  const [haveBooking, setHaveBooking] = useState(false);
   const navigation = useNavigation();
   const isFocused = useIsFocused();
 
@@ -77,32 +79,46 @@ const MeetingRoomScreen = () => {
     setEndFormatted(formattedTime);
   };
 
-  const handleSubmit = () => {
-    const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
-    const startTime = startFormatted || start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-    const endTime = endFormatted || end.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-    console.log(startTime, endTime);
-    if (new Date(`2000-01-01T${startTime}`) > new Date(`2000-01-01T${endTime}`)) {
-      Alert.alert('เวลาเริ่มไม่สามารถมากกว่าเวลาเลิกได้');
-      return;
-    } else {
-      Service.MeetingAPI(formattedDate, startTime, endTime)
+  const handleSubmit = async () => {
+    const EmpID = await AsyncStorage.getItem('ID');
+    Service.ApporveAPI(JSON.parse(EmpID))
       .then((response) => {
-        // console.log(response.data);
-        setMeetingRooms(response.data)
-        setShow(true)
+        console.log(JSON.stringify(response.data) == '[]');
+        if (JSON.stringify(response.data) == '[]') {
+          const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
+          const startTime = startFormatted || start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+          const endTime = endFormatted || end.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+          console.log(startTime, endTime);
+          if (new Date(`2000-01-01T${startTime}`) > new Date(`2000-01-01T${endTime}`)) {
+            Alert.alert('เวลาเริ่มไม่สามารถมากกว่าเวลาเลิกได้');
+            return;
+          } else {
+            Service.MeetingAPI(formattedDate, startTime, endTime)
+              .then((response) => {
+                // console.log(response.data);
+                setMeetingRooms(response.data)
+                setShow(true)
+              })
+              .catch((err) => {
+                console.log(err);
+              })
+          }
+        } else {
+          setShow(true)
+          setHaveBooking(true)
+        }
       })
-      .catch((err) => {
-        console.log(err);
+      .catch((error) => {
+        console.log(error);
       })
-    }
   };
 
-  handleItemPress = (itemId) => {
+  handleItemPress = async (itemId) => {
+    const EmpID = await AsyncStorage.getItem('ID');
     const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
     const startTime = startFormatted || start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
     const endTime = endFormatted || end.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-    navigation.navigate('Booking', { RoomID: itemId.RoomID, RoomName: itemId.RoomName, Date: formattedDate, Start: startTime, End: endTime });
+    navigation.navigate('Booking', { RoomID: itemId.RoomID, RoomName: itemId.RoomName, EmpID: JSON.parse(EmpID), Date: formattedDate, Start: startTime, End: endTime });
   }
 
   return (
@@ -149,7 +165,7 @@ const MeetingRoomScreen = () => {
         </TouchableOpacity>
       </View>
       <View>
-        {show == true ? (
+        {(show == true && haveBooking == false) ? (
           <ScrollView>
             {Array.isArray(meetingRooms) && meetingRooms.map((room, index) => (
               <TouchableOpacity
@@ -161,6 +177,11 @@ const MeetingRoomScreen = () => {
               </TouchableOpacity>
             ))}
           </ScrollView>
+        ) : null}
+        {(show == true && haveBooking == true) ? (
+          <View>
+            <Text style={styles.roomName}>คุณมีรายการที่จองอยู่แล้ว</Text>
+          </View>
         ) : null}
         {show == false ? (
           <View>

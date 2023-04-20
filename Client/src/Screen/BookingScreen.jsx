@@ -1,6 +1,6 @@
 import { Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { useRoute } from '@react-navigation/native'
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 ``
 import Service from '../api';
@@ -13,10 +13,8 @@ export default function BookingScreen({ navigation }) {
     const [isDisabled, setIsDisabled] = useState(false);
 
     const handleSubmit = async () => {
-        const EmpID = await AsyncStorage.getItem('ID');
-        // console.log(JSON.stringify(data.RoomID), topic, JSON.parse(EmpID), data.Date, data.Start, data.End);
         if (topic.length <= 10 && topic !== ''){
-            Service.BookingAPI( JSON.stringify(data.RoomID), topic, JSON.parse(EmpID), data.Date, data.Start, data.End )
+            Service.BookingAPI( JSON.stringify(data.RoomID), topic, data.EmpID, data.Date, data.Start, data.End )
             .then((response) => {
                 console.log(response.data);
                 navigation.navigate('Meeting')

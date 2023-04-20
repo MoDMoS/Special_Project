@@ -4,7 +4,7 @@ import { Table, Row, Rows } from 'react-native-table-component';
 import Service from '../api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const ReportsScreen = ({ navigation }) => {
+const ReportsScreen = () => {
   const [checkinData, setCheckinData] = useState([]);
   const [ID, setID] = useState('');
   const [tableData, setTableData] = useState([]);
@@ -25,7 +25,7 @@ const ReportsScreen = ({ navigation }) => {
           const data = [];
           console.log(response.data)
           response.data.forEach(item => {
-            data.push([item.CheckInDate, item.CheckInTime, item.CheckOutTime]);
+            data.push([item.CheckInDate, item.CheckInTime, item.CheckOutTime, item.ShiftDuration]);
           });
           setTableData(data);
         })
@@ -36,8 +36,8 @@ const ReportsScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Table style={{height: '95%'}}>
-        <Row data={['วันที่', 'เวลาเข้างาน', 'เวลาออกงาน']} style={styles.head} />
-        <Rows data={tableData} />
+        <Row data={['วันที่', 'เข้างาน', 'ออกงาน', 'ระยะเวลา']} style={styles.head} textStyle={styles.text}/>
+        <Rows data={tableData} textStyle={{fontSize: 16, color: 'black', fontWeight: 'bold', marginTop: 5}} />
       </Table>
       <TouchableOpacity
         style={styles.button}
