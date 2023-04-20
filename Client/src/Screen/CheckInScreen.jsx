@@ -23,9 +23,7 @@ const CheckInScreen = ({route}) => {
   const checkLocation = async faces => {
     if (!faceDetected) {
       const location = route.params.location;
-      const circleCenter = {lat: 13.853913193936197, lon: 100.38877181554058};
-      // const circleCenter = {lat: 13.821602612664261, lon: 100.51497715303887};
-      const isInsideCircle = isLocationInsideCircle( location, circleCenter, 800 );
+      const isInsideCircle = isLocationInsideCircle( location, 23 );
       if (isInsideCircle) {
         takePicture(faces);
       } else {
