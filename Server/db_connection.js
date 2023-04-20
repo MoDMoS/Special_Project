@@ -2,8 +2,11 @@ const express = require('express')
 const mysql = require('mysql')
 const multer = require('multer');
 const fs = require('fs')
+const { jwtGenerate } = require('./middleware/auth')
+require("dotenv").config()
 
 const app = express()
+const port = process.env.PORT
 app.use(express.json())
 
 const storage = multer.diskStorage({
@@ -45,6 +48,15 @@ app.get('/all', async (req, res) => {
         console.log(err);
         return res.status(500).send()
     }
+})
+
+
+app.post("/api/login", (req, res) => {
+    const empID = req.body.EmpID
+
+    const access_token = jwtGenerate(empID)
+
+    return res.status(200).json({access_token})
 })
 
 app.post('/api/checkuser', function (req, res) {
@@ -140,7 +152,7 @@ app.post('/api/check_InOrOut', async (req, res) => {
                 console.log(err);
                 return res.status(400).send()
             }
-            return res.status(200).send("Have")
+            return res.status(200).json(result)
         })
     } catch (err) {
         console.log(err);
@@ -218,6 +230,64 @@ app.get('/api/newspin', async (req, res) => {
     }
 })
 
+app.post('/api/meeting', async (req, res) => {
+    let date = req.body.Date;
+    let start = req.body.Start;
+    let end = req.body.End;
+    try {
+        connection.query("SELECT * FROM meetingroom WHERE RoomID NOT IN ( SELECT RoomID FROM booking_approve WHERE Date = '" + date + "' AND ((StartTime <= '" + start + "' AND EndTime > '" + start + "') OR (StartTime < '" + end + "' AND EndTime >= '" + end + "') OR (StartTime >= ' " + start + "' AND EndTime <= '" + end + "')))", (err, result, fields) => {
+            if (err) {
+                console.log(err);
+                return res.status(400).send()
+            }
+            return res.status(200).json(result)
+        })
+    } catch (err) {
+        console.log(err);
+        return res.status(500).send()
+    }
+})
+
+app.post('/api/booking', async (req, res) => {
+    let roomid = req.body.RoomID;
+    let topic = req.body.Topic;
+    let empID = req.body.EmpID;
+    let start = req.body.Start;
+    let end = req.body.End;
+    let date = req.body.Date;
+
+    console.log(roomid, topic, empID, start, end, date);
+    try {
+        connection.query("INSERT INTO `booking_approve`(`RoomID`, `Topic`, `EmployeeID`, `StartTime`, `EndTime`, `Date`, `Status`) VALUES ('" + roomid + "','" + topic + "','" + empID + "','" + start + "','" + end + "','" + date + "','Wait')", (err, result, fields) => {
+            if (err) {
+                console.log(err);
+                return res.status(400).send()
+            }
+            return res.status(200).send("Success")
+        })
+    } catch (err) {
+        console.log(err);
+        return res.status(500).send()
+    }
+})
+
+app.post('/api/checkbooking', async (req, res) => {
+    let empID = req.body.EmpID;
+    try {
+        connection.query("SELECT * FROM `booking_approve` WHERE `EmployeeID` = '" + empID + "' AND `Date` BETWEEN DATE_SUB(Now(), INTERVAL 3 MONTH) AND DATE_ADD(Now(), INTERVAL 3 MONTH);", (err, result, fields) => {
+            if (err) {
+                console.log(err);
+                return res.status(400).send()
+            }
+            return res.status(200).json(result)
+        })
+    } catch (err) {
+        console.log(err);
+        return res.status(500).send()
+    }
+})
+
+
 app.get('/api/contacts', async (req, res) => {
     try {
         connection.query("SELECT `TitleName`, `FirstName`, `LastName`, `PhoneNumber`, `Email`, `DepartmentName` FROM `employee` WHERE 1", (err, result, fields) => {
@@ -250,4 +320,4 @@ app.post('/api/reports', async (req, res) => {
 })
 
 
-app.listen(3000, () => console.log(`Example app listening on port 3000!`))
+app.listen(port, () => console.log(`Example app listening on port 3000!`))
