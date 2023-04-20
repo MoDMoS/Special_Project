@@ -255,8 +255,6 @@ app.post('/api/booking', async (req, res) => {
     let start = req.body.Start;
     let end = req.body.End;
     let date = req.body.Date;
-
-    console.log(roomid, topic, empID, start, end, date);
     try {
         connection.query("INSERT INTO `booking_approve`(`RoomID`, `Topic`, `EmployeeID`, `StartTime`, `EndTime`, `Date`, `Status`) VALUES ('" + roomid + "','" + topic + "','" + empID + "','" + start + "','" + end + "','" + date + "','Wait')", (err, result, fields) => {
             if (err) {
@@ -271,10 +269,29 @@ app.post('/api/booking', async (req, res) => {
     }
 })
 
+app.post('/api/delbooking', async (req, res) => {
+    const bookingId = req.body.BookingID;
+    const date = req.body.Date;
+    const start = req.body.Start;
+    const end = req.body.End;
+    try {
+        connection.query(`DELETE FROM booking_approve WHERE BookingID = '${bookingId}' AND Date = '${date}' AND StartTime = '${start}' AND EndTime = '${end}' `, (err, result, fields) => {
+            if (err) {
+                console.log(err);
+                return res.status(400).send();
+            }
+            return res.status(200).json(result);
+        });
+    } catch (err) {
+        console.log(err);
+        return res.status(500).send();
+    }
+});
+
 app.post('/api/checkbooking', async (req, res) => {
     let empID = req.body.EmpID;
     try {
-        connection.query("SELECT * FROM `booking_approve` WHERE `EmployeeID` = '" + empID + "' AND `Date` BETWEEN DATE_SUB(Now(), INTERVAL 3 MONTH) AND DATE_ADD(Now(), INTERVAL 3 MONTH);", (err, result, fields) => {
+        connection.query("SELECT * FROM `booking_approve` WHERE `EmployeeID` = '" + empID + "' AND `Date` BETWEEN Now() AND DATE_ADD(Now(), INTERVAL 3 MONTH);", (err, result, fields) => {
             if (err) {
                 console.log(err);
                 return res.status(400).send()
@@ -306,7 +323,7 @@ app.get('/api/contacts', async (req, res) => {
 app.post('/api/reports', async (req, res) => {
     let EmpID = req.body.EmpID;
     try {
-        connection.query("SELECT DATE_FORMAT(checkin.CheckInDate, '%d/%m/%y') AS CheckInDate, checkin.CheckInTime, DATE_FORMAT(checkout.CheckOutDate, '%d/%m/%y') AS CheckOutDate, checkout.CheckOutTime FROM checkin LEFT JOIN checkout ON checkin.EmployeeID = checkout.EmployeeID AND checkin.CheckInDate = checkout.CheckOutDate WHERE checkin.EmployeeID='" + EmpID + "' AND (checkout.CheckOutDate IS NULL OR DATE(checkin.CheckInDate) = DATE(checkout.CheckOutDate));", (err, result, fields) => {
+        connection.query(`SELECT DATE_FORMAT(checkin.CheckInDate, '%d/%m/%y') AS CheckInDate, checkin.CheckInTime, DATE_FORMAT(checkout.CheckOutDate, '%d/%m/%y') AS CheckOutDate, checkout.CheckOutTime, TIMEDIFF(checkout.CheckOutTime, checkin.CheckInTime) AS ShiftDuration, ADDTIME(checkin.CheckInTime, TIMEDIFF(checkout.CheckOutTime, checkin.CheckInTime)) AS EndTime FROM checkin  LEFT JOIN checkout  ON checkin.EmployeeID = checkout.EmployeeID AND checkin.CheckInDate = checkout.CheckOutDate  WHERE checkin.EmployeeID = '${EmpID}' AND (checkout.CheckOutDate IS NULL OR DATE(checkin.CheckInDate) = DATE(checkout.CheckOutDate));`, (err, result, fields) => {
             if (err) {
                 console.log(err);
                 return res.status(400).send()

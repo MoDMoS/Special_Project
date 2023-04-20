@@ -28,6 +28,7 @@ export default function MapScreen({ route }) {
         console.log('error');
       },
     );
+    checkInOrOut();
   }, []);
 
   const onReady = () => {
