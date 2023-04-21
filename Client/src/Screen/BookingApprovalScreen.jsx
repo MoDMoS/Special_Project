@@ -34,7 +34,7 @@ const BookingApprovalScreen = () => {
     console.log(booking.BookingID, formatDate(booking.Date), booking.StartTime, booking.EndTime);
     Service.DelBookingAPI(JSON.stringify(booking.BookingID), formatDate(booking.Date), booking.StartTime, booking.EndTime)
       .then((response) => {
-        console.log(response.data.affectedRows == 1);
+        // console.log(response.data.affectedRows == 1);
         if(response.data.affectedRows == 1) {
           Alert.alert("ยกเลิกการจองสำเร็จ")
           navigation.navigate('HomeStack')

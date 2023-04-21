@@ -41,7 +41,7 @@ const ReportsScreen = () => {
       </Table>
       <TouchableOpacity
         style={styles.button}
-        onPress={() => navigation.navigate('Map')}>
+        onPress={() => navigation.navigate('HomeStack')}>
         <Text style={styles.buttonText}>Go Back</Text>
       </TouchableOpacity>
     </View>

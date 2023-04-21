@@ -77,7 +77,7 @@ const MeetingRoomScreen = () => {
     const EmpID = await AsyncStorage.getItem('ID');
     Service.ApporveAPI(JSON.parse(EmpID))
       .then((response) => {
-        console.log(JSON.stringify(response.data) == '[]');
+        // console.log(JSON.stringify(response.data) == '[]');
         if (JSON.stringify(response.data) == '[]') {
           const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
           const startTime = startFormatted || start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });

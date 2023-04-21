@@ -68,12 +68,14 @@ export default class ContactScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'black',
+    // backgroundColor: 'black',
   },
   scrollView: {
     flex: 1,
   },
   listItem: {
+    borderWidth: 1,
+    borderColor: 'black',
     backgroundColor: 'white',
     borderRadius: 10,
     height: 150,

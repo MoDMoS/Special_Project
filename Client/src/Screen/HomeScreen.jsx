@@ -117,6 +117,8 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
   },
   listItem: {
+    borderColor: 'black',
+    borderWidth: 1,
     backgroundColor: 'white',
     borderRadius: 10,
     height: 150,

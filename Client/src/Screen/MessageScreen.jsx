@@ -31,7 +31,7 @@ export default class MessageScreen extends React.Component {
   render() {
     const { news } = this.state;
     return (
-      <ScrollView style={{ backgroundColor: "black" }}>
+      <ScrollView>
         <List.Section>
           {Array.isArray(news) && news.map((item, index) =>
             <TouchableOpacity key={index} onPress={() => this.handleItemPress(item)}>
@@ -56,6 +56,8 @@ export default class MessageScreen extends React.Component {
 
 const styles = StyleSheet.create({
   listItem: {
+    borderColor: 'black',
+    borderWidth: 1,
     backgroundColor: 'white',
     borderRadius: 10,
     height: 150,
