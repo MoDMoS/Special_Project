@@ -4,18 +4,12 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ff99f625-c859-4cf7-adc8-2477c56bcba8" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/Client/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/Client/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/ios/Final_Project/Info.plist" beforeDir="false" afterPath="$PROJECT_DIR$/Client/ios/Final_Project/Info.plist" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/ios/Podfile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/Client/ios/Podfile.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Client/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/Client/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/Navigation/LoginStack.js" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/Navigation/LoginStack.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/Root.js" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/Root.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/Screen/HomeScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/Screen/HomeScreen.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/Screen/LoginScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/Screen/LoginScreen.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/Screen/RegisScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/Screen/RegisScreen.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server/db_connection.js" beforeDir="false" afterPath="$PROJECT_DIR$/Server/db_connection.js" afterDir="false" />
+    <list default="true" id="ff99f625-c859-4cf7-adc8-2477c56bcba8" name="Changes" comment="Changes">
+      <change beforePath="$PROJECT_DIR$/Client/android/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/Client/android/app/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/android/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Client/android/app/src/main/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/android/app/src/main/java/com/final_project/MainApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/android/app/src/main/java/com/final_project/MainApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/android/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/Client/android/settings.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/src/api/index.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/api/index.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,6 +29,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="RunOnceActivity.cidr.known.project.marker" value="true" />
     <property name="cidr.known.project.marker" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/Client/android" />
     <property name="settings.editor.selected.configurable" value="AndroidSdkUpdater" />
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />

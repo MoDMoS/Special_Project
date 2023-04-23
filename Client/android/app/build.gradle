@@ -1,4 +1,5 @@
 apply plugin: "com.android.application"
+apply plugin: 'com.google.android.gms.strict-version-matcher-plugin'
 
 import com.android.build.OutputFile
 import org.apache.tools.ant.taskdefs.condition.Os
@@ -259,6 +260,7 @@ dependencies {
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
 
     implementation project(':react-native-vector-icons')
+    implementation project(':react-native-camera')
 
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
         exclude group:'com.facebook.fbjni'
@@ -281,6 +283,7 @@ dependencies {
     } else {
         implementation jscFlavor
     }
+    
 }
 
 if (isNewArchitectureEnabled()) {
