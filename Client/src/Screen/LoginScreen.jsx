@@ -22,9 +22,9 @@ const LoginScreen = () => {
     Service.CheckUserAPI(email, Id)
       .then((response) => {
         const Data = response.data;
-        console.log(response.data);
+        // console.log(response);
         if (Data[0]) {
-          navigation.navigate('RegisScreen', { data: JSON.stringify(Data[0]) })
+          navigation.navigate('RefScreen', { data: JSON.stringify(Data[0]) })
         } else {
           Alert.alert("Error ID or Email not correctly");
         }

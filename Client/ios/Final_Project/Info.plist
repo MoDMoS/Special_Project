@@ -77,8 +77,7 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>com.apple.developer.networking.networkextension
-</key>
+	<key>com.apple.developer.networking.networkextension</key>
 	<string></string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string></string>
@@ -86,5 +85,14 @@
 	<string>${PRODUCT_NAME} Camera Usage</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>Your message to user when the photo library is accessed for the first time</string>
+  <key>UIUserNotificationForegroundPresentationOptions</key>
+  <dict>
+    <key>alert</key>
+    <true/>
+    <key>badge</key>
+    <true/>
+    <key>sound</key>
+    <true/>
+  </dict>
 </dict>
 </plist>

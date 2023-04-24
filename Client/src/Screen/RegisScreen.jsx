@@ -13,7 +13,7 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 export default function RegisScreen() {
   const navigation = useNavigation();
   const route = useRoute();
-  const data = JSON.parse(route.params.data);
+  const data = route.params.data;
 
   return (
     <ScrollView>

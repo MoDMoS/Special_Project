@@ -11,9 +11,9 @@ export default function MeetingStack({ navigation, route }) {
 
   return (
     <Stack.Navigator initialRouteName={initialRouteName} screenOptions={{ headerShown: false }}>
-            <Stack.Screen name="Meeting" component={MeetingRoomScreen} />
-            <Stack.Screen name="Booking" component={BookingScreen} />
-            <Stack.Screen name="Apporval" component={BookingApprovalScreen} />
+            <Stack.Screen name="Meeting" component={MeetingRoomScreen} options={{unmountOnBlur: true,}}/>
+            <Stack.Screen name="Booking" component={BookingScreen} options={{unmountOnBlur: true,}}/>
+            <Stack.Screen name="Apporval" component={BookingApprovalScreen} options={{unmountOnBlur: true,}}/>
     </Stack.Navigator>
   )
 }

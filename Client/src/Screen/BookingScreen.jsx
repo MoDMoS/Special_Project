@@ -3,6 +3,7 @@ import { useRoute } from '@react-navigation/native'
 import { useEffect, useState } from 'react';
 
 import Service from '../api';
+import PushNotification from 'react-native-push-notification';
 
 export default function BookingScreen({ navigation }) {
     const route = useRoute();
@@ -10,17 +11,34 @@ export default function BookingScreen({ navigation }) {
 
     const [topic, setTopic] = useState('');
     const [isDisabled, setIsDisabled] = useState(false);
+    const date = new Date(data.Date);
+    const startTime = new Date(data.Start);
+
+    const notificationDate = new Date(
+        date.getFullYear(),
+        date.getMonth(),
+        date.getDate(),
+        startTime.getHours(),
+        startTime.getMinutes() - 15 * 60 * 1000,
+    );
 
     const handleSubmit = async () => {
-        if (topic.length <= 10 && topic !== ''){
-            Service.BookingAPI( JSON.stringify(data.RoomID), topic, data.EmpID, data.Date, data.Start, data.End )
-            .then((response) => {
-                // console.log(response.data);
-                navigation.navigate('Meeting')
-            })
-            .catch((err) => {
-                console.log(err);
-            })
+        if (topic.length <= 10 && topic !== '') {
+            Service.BookingAPI(JSON.stringify(data.RoomID), topic, data.EmpID, data.Datef, data.Startf, data.Endf)
+                .then((response) => {
+                    // console.log(response.data);
+                    PushNotification.localNotificationSchedule({
+                        title: 'กำหนดการจองห้องประชุม',
+                        message: 'อีก 15 นาทีจะถึงกำหนดการที่คุณจองห้องประชุมไว้',
+                        date: notificationDate,
+                        allowWhileIdle: true,
+                        userInfo: {},
+                    });
+                    navigation.navigate('Meeting')
+                })
+                .catch((err) => {
+                    console.log(err);
+                })
         } else {
             Alert.alert('กรุณากำหนดหัวข้อการใช้ห้องประชุม');
         }
@@ -51,15 +69,13 @@ export default function BookingScreen({ navigation }) {
             <View style={{ flexDirection: 'row', }}>
                 <TextInput
                     style={styles.time}
-                    placeholder="Date"
-                    value={route.params.Start}
+                    value={route.params.Startf}
                     editable={false}
                 />
                 <Text style={{ marginTop: 10, fontSize: 30, fontWeight: 'bold', marginBottom: 5, }}> - </Text>
                 <TextInput
                     style={styles.time}
-                    placeholder="Date"
-                    value={route.params.End}
+                    value={route.params.Endf}
                     editable={false}
                 />
             </View>

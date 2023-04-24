@@ -4,6 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 
 import Service from '../api';
+import PushNotification from 'react-native-push-notification';
 
 const BookingApprovalScreen = () => {
   const [bookings, setBookings] = useState([]);
@@ -37,6 +38,7 @@ const BookingApprovalScreen = () => {
         // console.log(response.data.affectedRows == 1);
         if(response.data.affectedRows == 1) {
           Alert.alert("ยกเลิกการจองสำเร็จ")
+          PushNotification.cancelAllLocalNotifications();
           navigation.navigate('HomeStack')
         } else {
           Alert.alert("Error")
