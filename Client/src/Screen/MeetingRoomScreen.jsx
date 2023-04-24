@@ -9,9 +9,9 @@ import Service from '../api';
 const MeetingRoomScreen = () => {
   const [meetingRooms, setMeetingRooms] = useState([]);
   const [date, setDate] = useState(new Date());
-  const [start, setStart] = useState(new Date());
+  const [start, setStart] = useState(new Date(Date.now() + 30 * 60 * 1000));
   const [end, setEnd] = useState(new Date());
-  const [minStartTime, setMinStartTime] = useState(new Date());
+  const [minStartTime, setMinStartTime] = useState(new Date(Date.now() + 30 * 60 * 1000));
   const [minEndTime, setMinEndTime] = useState(new Date());
   const [show, setShow] = useState(false);
   const [startFormatted, setStartFormatted] = useState('')
@@ -20,26 +20,35 @@ const MeetingRoomScreen = () => {
   const navigation = useNavigation();
 
   const minimumTime = new Date();
+  if (minimumTime.getHours() >= 17) {
+    minimumTime.setDate(minimumTime.getDate() + 1);
+  }
   minimumTime.setHours(9, 0, 0);
+
   const maxStartTime = new Date();
   maxStartTime.setHours(17, 0, 0, 0);
+
   const maxEndTime = new Date();
   maxEndTime.setHours(18, 0, 0, 0);
 
   useEffect(() => {
+    if (start < minStartTime) {
+      setMinStartTime(minimumTime);
+      setStart(minStartTime);
+    }
     const minEndTime = new Date(start);
     minEndTime.setMinutes(minEndTime.getMinutes() + 30);
     setMinEndTime(minEndTime);
     if (end < minEndTime) {
       setEnd(minEndTime);
     }
-  }, [start]);
+  }, [start, end]);
+
 
   const onChangeTextDate = (event, selectedDate) => {
     const currentDate = selectedDate || date;
     setDate(currentDate);
     const minimumTime = new Date();
-
     if (currentDate.toDateString() !== new Date().toDateString()) {
       minimumTime.setHours(9, 0, 0);
     }
@@ -60,6 +69,8 @@ const MeetingRoomScreen = () => {
       setStartFormatted(formattedTime);
     } else {
       setStart(selectedDate);
+      const end = new Date(selectedDate.getTime() + 30 * 60 * 1000);
+      onChangeEndTime(end);
       const formattedTime = selectedDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
       setStartFormatted(formattedTime);
     }
@@ -112,7 +123,7 @@ const MeetingRoomScreen = () => {
     const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
     const startTime = startFormatted || start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
     const endTime = endFormatted || end.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-    navigation.navigate('Booking', { RoomID: itemId.RoomID, RoomName: itemId.RoomName, EmpID: JSON.parse(EmpID), Date: formattedDate, Start: startTime, End: endTime });
+    navigation.navigate('Booking', { RoomID: itemId.RoomID, RoomName: itemId.RoomName, EmpID: JSON.parse(EmpID), Datef: formattedDate, Startf: startTime, Endf: endTime, Date: date.toISOString(), Start: start.toISOString() });
   }
 
   return (
@@ -139,6 +150,7 @@ const MeetingRoomScreen = () => {
           display="default"
           onChange={onChangeStartTime}
           minimumDate={minStartTime}
+          maximumDate={maxStartTime}
         />
         <DateTimePicker
           value={end}
@@ -147,6 +159,7 @@ const MeetingRoomScreen = () => {
           display="default"
           onChange={onChangeEndTime}
           minimumDate={minEndTime}
+          maximumDate={maxEndTime}
         />
       </View>
       <View>

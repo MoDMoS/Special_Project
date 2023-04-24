@@ -4,6 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Geolocation from '@react-native-community/geolocation';
 import {Alert} from 'react-native';
 import { LogBox } from 'react-native';
+import PushNotification from 'react-native-push-notification';
 
 import LoginStack from './Navigation/LoginStack';
 import HomeStack from './Navigation/HomeStack';
@@ -35,6 +36,7 @@ const Root = () => {
       }
     };
     getData();
+    createChannel();
   }, []);
 
   useEffect(() => {
@@ -53,6 +55,15 @@ const Root = () => {
       { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
     );
   }, []);
+
+  const createChannel = () => {
+    PushNotification.createChannel(
+      {
+        channelId: 'test-channel',
+        channelName: 'Test Channel',
+      }
+    )
+  }
 
   if (initialScreen && !mockLocationEnabled) {
     return (
