@@ -1,5 +1,6 @@
-const transporter = require('../middleware/transporter')
+const { createTransport } = require('../middleware/transporter')
 const { jwtGenerate } = require('../middleware/auth')
+const { generateReferenceCode } = require('../middleware/generateReferenceCode')
 const fs = require('fs')
 
 module.exports = (connection) => {
@@ -17,12 +18,13 @@ module.exports = (connection) => {
         const referenceCode = generateReferenceCode();
 
         const message = {
-            from: 'koonmos1@gmail.com',
+            from: 'koonmos367@gmail.com',
             to: Email,
             subject: 'Registration reference code',
             text: `Dear user,\n\nThank you for registering for our app. Your registration reference code is: ${referenceCode}\n\nRegards,\nThe App Team`,
         };
 
+        const transporter = createTransport()
         transporter.sendMail(message, (error, info) => {
             if (error) {
                 console.error('Error:', error);
