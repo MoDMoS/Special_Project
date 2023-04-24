@@ -16,6 +16,7 @@
 #import <UserNotifications/UNUserNotificationCenter.h>
 #import <UserNotifications/UserNotifications.h>
 #import <RNCPushNotificationIOS.h>
+#import "RNSplashScreen.h"
 
 #import <react/config/ReactNativeConfig.h>
 

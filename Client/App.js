@@ -1,7 +1,8 @@
 import React, {useEffect} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import JailMonkey from 'jail-monkey';
-import {Alert} from 'react-native';
+import {Alert, Location} from 'react-native';
+import MockLocationDetector from 'react-native-mock-location-detector';
 
 import Root from './src/Root';
 
