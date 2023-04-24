@@ -4,6 +4,7 @@ import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.ReactRootView;
 import com.oblador.vectoricons.VectorIconsPackage;
+import com.mocklocation.reactnative.RNMockLocationDetectorPackage;
 
 public class MainActivity extends ReactActivity {
 
