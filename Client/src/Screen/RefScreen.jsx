@@ -1,40 +1,67 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
-// import nodemailer from 'nodemailer';
+import React, { useEffect, useState } from 'react';
+import { View, TextInput, StyleSheet, Text, TouchableOpacity, Alert } from 'react-native';
+import { useRoute } from '@react-navigation/native';
 
-const RefScreen= () => {
-  const [recipientEmail, setRecipientEmail] = useState('');
-  const [referralCode, setReferralCode] = useState('');
+import Service from '../api';
 
-  const handleSendReferral = async () => {
-    const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        user: 'koonmos3867@gmail.com',
-        pass: 'Koonmos123'
-      }
-    });
+const RefScreen = ({ navigation }) => {
+  const [refcode, setRefcode] = useState('');
+  const route = useRoute();
+  const data = JSON.parse(route.params.data);
 
-    const mailOptions = {
-      from: 'koonmos3867@gmail.com',
-      to: recipientEmail,
-      subject: 'Referral Code',
-      text: `Here's your referral code: ${referralCode}`
-    };
+  useEffect(() => {
+    Service.RefCodeAPI(data.EmployeeID, data.Email)
+      .then((response) => {
+        console.log(response.data.message);
+      })
+      .catch((error) => {
+        error => console.error(error)
+      })
+  }, [])
 
-    await transporter.sendMail(mailOptions);
-    alert('Referral code sent successfully!');
+  const handleRefcodeChange = (value) => {
+    setRefcode(value);
   };
+
+  const handleSubmit = () => {
+    if (refcode.length === 6) {
+      // console.log(refcode);
+      Service.CheckRefAPI(data.Email, data.EmployeeID, refcode)
+        .then((response) => {
+          // console.log(response.data[0]);
+          if (response.data[0] !== undefined) {
+            navigation.navigate('RegisScreen', {data: data})
+          }
+          else {
+            Alert.alert("รหัสยืนยันไม่ถูกต้อง กรุณาลองอีกครั้ง")
+          }
+        })
+        .catch((error) => { console.log(error) })
+    } else {
+      Alert.alert('กรุณาใส่รหัสยืนยันให้ครบ');
+    }
+  };
+
+  const textInputs = [];
 
   return (
     <View style={styles.container}>
-      <Text>Recipient Email:</Text>
-      <TextInput value={recipientEmail} onChangeText={setRecipientEmail} />
-
-      <Text>Referral Code:</Text>
-      <TextInput value={referralCode} onChangeText={setReferralCode} />
-
-      <Button title="Send Referral" onPress={handleSendReferral} />
+      <View style={styles.column}>
+        <Text style={{ fontSize: 40, marginTop: 200, marginBottom: 10 }}>Reference Code</Text>
+        <Text style={{ fontSize: 20 }}>รหัสยืนยันได้ส่งไปที่เมลของคุณแล้ว</Text>
+        <View style={styles.row}>
+          <TextInput
+            style={styles.input}
+            maxLength={6}
+            onChangeText={(value) => handleRefcodeChange(value)}
+            value={refcode}
+            autoCapitalize="none"
+          />
+        </View>
+        <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+          <Text style={styles.buttonText}>Submit</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -42,9 +69,43 @@ const RefScreen= () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
+    padding: 20,
+    backgroundColor: 'rgba(252, 206, 136, 0.75)',
+  },
+  row: {
+    flexDirection: 'row',
     justifyContent: 'center',
-    backgroundColor: 'rgba(252, 206, 136, 0.8)',
+    alignItems: 'center',
+    marginTop: 50,
+  },
+  column: {
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 50,
+  },
+  input: {
+    width: '100%',
+    height: 70,
+    borderWidth: 1,
+    borderColor: 'black',
+    marginHorizontal: 5,
+    fontSize: 24,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    backgroundColor: '#fff'
+  },
+  button: {
+    marginTop: 50,
+    backgroundColor: 'blue',
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 5,
+  },
+  buttonText: {
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 16,
   },
 });
 
