@@ -46,8 +46,7 @@ const RegisAuthAPI = async formData => {
 const AuthAPI = async formData => {
   const url = REACT_APP_FACE_API_URL + '/verify';
 
-  // console.log(formData);
-  return axios.post(url, formData, { headers: { 'content-Type': 'application/json' } });
+  return axios.post(url, formData, { headers: { 'content-Type': 'multipart/form-data' } });
 };
 
 const Check_InorOut = async (empID, date) => {

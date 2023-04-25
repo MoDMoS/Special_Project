@@ -19,14 +19,17 @@ export default function BookingScreen({ navigation }) {
         date.getMonth(),
         date.getDate(),
         startTime.getHours(),
-        startTime.getMinutes() - 15 * 60 * 1000,
+        startTime.getMinutes(),
     );
+
+    notificationDate.setMinutes(notificationDate.getMinutes() - 15);
 
     const handleSubmit = async () => {
         if (topic.length <= 10 && topic !== '') {
             Service.BookingAPI(JSON.stringify(data.RoomID), topic, data.EmpID, data.Datef, data.Startf, data.Endf)
                 .then((response) => {
-                    // console.log(response.data);
+                    console.log("1",new Date(date.getFullYear(), date.getMonth(), date.getDate(), startTime.getHours(), startTime.getMinutes()))
+                    console.log("2",notificationDate);
                     PushNotification.localNotificationSchedule({
                         title: 'กำหนดการจองห้องประชุม',
                         message: 'อีก 15 นาทีจะถึงกำหนดการที่คุณจองห้องประชุมไว้',

@@ -48,7 +48,7 @@ const MeetingRoomScreen = () => {
   const onChangeTextDate = (event, selectedDate) => {
     const currentDate = selectedDate || date;
     setDate(currentDate);
-    const minimumTime = new Date();
+    const minimumTime = new Date(Date.now() + 30 * 60 * 1000);
     if (currentDate.toDateString() !== new Date().toDateString()) {
       minimumTime.setHours(9, 0, 0);
     }

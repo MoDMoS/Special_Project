@@ -1,8 +1,8 @@
 
 function haversine(location1, location2, options = {}) {
   const earthRadius = options.unit === 'meter' ? 6371000 : 6371; // Radius of the earth in meters or kilometers
-  const lat1 = location1.lat;
-  const lon1 = location1.lon;
+  const lat1 = location1.latitude;
+  const lon1 = location1.longitude;
   const lat2 = location2.lat;
   const lon2 = location2.lon;
 

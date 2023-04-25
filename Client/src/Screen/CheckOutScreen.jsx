@@ -67,7 +67,7 @@ const CheckOutScreen = ({route}) => {
               route.params.data,
               date,
               time,
-              route.params.location.lat + ', ' + route.params.location.lon,
+              route.params.location.latitude + ', ' + route.params.location.longitude,
               DeviceModel,
             );
             Alert.alert('ลงชื่อออกงาน', 'ลงชื่อออกงานเรียบร้อย', [

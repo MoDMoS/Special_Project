@@ -43,7 +43,8 @@ const PincodeScreen = ({ route }) => {
           .catch((err) => {
             console.log(err);
           })
-        
+      } else {
+        Alert.alert('รหัสผ่านไม่ถูกต้อง');
       }
     } else {
       Alert.alert('Please enter pincode');

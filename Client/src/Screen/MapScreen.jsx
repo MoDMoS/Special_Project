@@ -53,9 +53,7 @@ export default function MapScreen({ route }) {
 
   const navigateToScreen = async routeName => {
     let ID = await AsyncStorage.getItem('ID');
-    ID = JSON.parse(ID)
-    const loc = await map.call('location');
-    navigation.navigate(routeName, { data: ID, location: loc });
+    navigation.navigate(routeName, { data: JSON.parse(ID), location: location });
   };
 
   const checkInOrOut = async () => {
@@ -85,6 +83,10 @@ export default function MapScreen({ route }) {
         location={location && { lon: location.longitude, lat: location.latitude }}
         onReady={onReady}
         onOverlayClick={onOverlayClick}
+        options={{
+          draggable: false,
+          disableMouse: true,
+        }}
       />
       {check == "[]" ? (
         <TouchableOpacity

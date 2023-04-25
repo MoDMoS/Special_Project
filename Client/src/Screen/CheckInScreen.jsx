@@ -62,13 +62,14 @@ const CheckInScreen = ({route}) => {
           const date = `${year}-${month}-${day}`;
           // console.log(date);
           const time = dateTime.toLocaleTimeString('th-TH', {hour12: false});
+          // console.log(route.params.location);
           const response = await Service.AuthAPI(formData);
           if (response.data.message == 'Face match!!') {
             Service.CheckIn(
               route.params.data,
               date,
               time,
-              route.params.location.lat + ', ' + route.params.location.lon,
+              route.params.location.latitude + ', ' + route.params.location.longitude,
               DeviceModel,
             );
             Alert.alert('ลงชื่อเข้างาน', 'ลงชื่อเข้างานเรียบร้อย', [
