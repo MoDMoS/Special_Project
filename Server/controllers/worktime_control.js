@@ -50,6 +50,23 @@ module.exports = (connection) => {
         }
     }
 
+    const check = (req, res) => {
+        const { EmpID, Date, Time, Location, Model } = req.body
+    
+        try {
+            connection.query("INSERT INTO `checkout`(`EmployeeID`, `CheckOutDate`, `CheckOutTime`, `Location`, `Model`) VALUES (" + `'` + EmpID + `','` + Date + `','` + Time + `','` + Location + `','` + Model + `')`, (err, result, fields) => {
+                if (err) {
+                    console.log(err);
+                    return res.status(400).send()
+                }
+                return res.status(200).json(result)
+            })
+        } catch (err) {
+            console.log(err);
+            return res.status(500).send()
+        }
+    }
+
     const reports = (req, res) => {
         const { EmpID } = req.body;
         try {

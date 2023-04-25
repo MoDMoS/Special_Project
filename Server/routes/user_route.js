@@ -21,7 +21,6 @@ module.exports = (connection) => {
     router.post('/checkref', usercontrol.checkRef)
     router.post('/checkuser', usercontrol.checkUser)
     router.post('/checkaccount', usercontrol.checkAccount)
-    router.post('/upload', upload.single('picture'), usercontrol.upload)
     router.get('/contacts', usercontrol.contacts)
     router.use((req, res, next) => {
         req.connection = connection;
