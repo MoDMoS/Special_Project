@@ -5,6 +5,7 @@ import {
   Text,
   View,
   ImageBackground,
+  Alert,
 } from 'react-native'
 import DeviceInfo from 'react-native-device-info';
 
@@ -42,13 +43,13 @@ class RegisAuthScreen extends Component {
   takePicture = async () => {
     const options = {quality: 0.8, base64: false};
     const data = await this.camera.takePictureAsync(options);
-    console.log(data.uri);
+    // console.log(data.uri);
     this.setState({imageUri: data.uri});
   }
 
   uploadPicture = async (data) => {
     const formData = new FormData();
-    console.log(data);
+    // console.log(data);
     formData.append('picture', {
       uri: data,
       type: 'image/jpeg',
@@ -57,15 +58,19 @@ class RegisAuthScreen extends Component {
     formData.append('EmpID', this.EmpID);
     formData.append('Pin', this.Pin);
     formData.append('Device', this.DeviceModel);
-    const check = await Service.CheckAccountAPI(this.EmpID);
-    formData.append('Check', check.data);
     // console.log(formData);
 
     try {
       const response = await Service.RegisAuthAPI(formData);
       // console.log(response.data);
-      if(response.data == "File uploaded successfully"){
+      if(response.data.message == "File uploaded successfully"){
+        Alert.alert("สมัครใช้งานเรียบร้อย")
         this.props.navigation.navigate('Pincode');
+      }
+      else{
+        console.log(response.data);
+        Alert.alert("ไม่ตรวจพบใบหน้ากรุณาลองอีกครั้ง")
+        this.setState({ imageUri: null })
       }
     } catch (error) {
       console.log(error);

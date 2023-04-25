@@ -25,12 +25,6 @@ const CheckUserAPI = async (email, id) => {
   return axios.post(url, { Email: email, EmpID: id }, { headers: { 'content-Type': 'application/json' } });
 };
 
-const CheckAccountAPI = async EmpID => {
-  const url = REACT_APP_API_URL + '/api/user/checkaccount';
-
-  return axios.post(url, { EmpID: EmpID }, { headers: { 'content-Type': 'application/json' } });
-};
-
 const NewsAPI = async () => {
   const url = REACT_APP_API_URL + '/api/news/news';
 
@@ -44,9 +38,9 @@ const NewsPinAPI = async () => {
 };
 
 const RegisAuthAPI = async formData => {
-  const url = REACT_APP_API_URL + '/api/user/upload';
+  const url = REACT_APP_FACE_API_URL + '/upload';
 
-  return axios.post(url, formData, { headers: { Accept: 'application/json', 'content-Type': 'multipart/form-data' } });
+  return axios.post(url, formData, { headers: { 'content-Type': 'multipart/form-data' } });
 };
 
 const AuthAPI = async formData => {
@@ -116,7 +110,6 @@ const Service = {
   RefCodeAPI,
   CheckRefAPI,
   CheckUserAPI,
-  CheckAccountAPI,
   RegisAuthAPI,
   AuthAPI,
   Check_InorOut,
