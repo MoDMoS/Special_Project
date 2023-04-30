@@ -40,20 +40,20 @@ const Root = () => {
   }, []);
 
   useEffect(() => {
-    Geolocation.getCurrentPosition(
-      position => {
-        const { latitude, longitude, accuracy } = position.coords;
-        console.log(position.coords);
-        if (accuracy > 35) {
-          setMockLocationEnabled(true);
-          console.log('Mock location detected');
-        } else {
-          console.log('Real location');
-        }
-      },
-      error => console.log(error),
-      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
-    );
+    // Geolocation.getCurrentPosition(
+    //   position => {
+    //     const { latitude, longitude, accuracy } = position.coords;
+    //     console.log(position.coords);
+    //     if (accuracy > 35) {
+    //       setMockLocationEnabled(true);
+    //       console.log('Mock location detected');
+    //     } else {
+    //       console.log('Real location');
+    //     }
+    //   },
+    //   error => console.log(error),
+    //   { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
+    // );
   }, []);
 
   const createChannel = () => {

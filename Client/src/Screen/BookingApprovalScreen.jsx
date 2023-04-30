@@ -5,6 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 
 import Service from '../api';
 import PushNotification from 'react-native-push-notification';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const BookingApprovalScreen = () => {
   const [bookings, setBookings] = useState([]);
@@ -16,7 +17,7 @@ const BookingApprovalScreen = () => {
 
   const getBookings = async () => {
     const EmpID = await AsyncStorage.getItem('ID');
-    Service.ApporveAPI(JSON.parse(EmpID))
+    Service.UserBookingAPI(JSON.parse(EmpID))
       .then((response) => {
         setBookings(response.data);
       })
@@ -36,14 +37,14 @@ const BookingApprovalScreen = () => {
     Service.DelBookingAPI(JSON.stringify(booking.BookingID), formatDate(booking.Date), booking.StartTime, booking.EndTime)
       .then((response) => {
         // console.log(response.data.affectedRows == 1);
-        if(response.data.affectedRows == 1) {
+        if (response.data.affectedRows == 1) {
           Alert.alert("ยกเลิกการจองสำเร็จ")
           PushNotification.cancelAllLocalNotifications();
           navigation.navigate('HomeStack')
         } else {
           Alert.alert("Error")
         }
-        
+
       })
       .catch((err) => {
         console.log(err);
@@ -53,30 +54,32 @@ const BookingApprovalScreen = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>สถานะการจองห้องประชุม</Text>
-      <View>
-        {bookings.map((booking) => (
-          <View style={styles.bookingItem} key={booking.BookingID}>
-            <Text style={styles.bookingTitle}>หัวข้อการประชุม : {booking.Topic}</Text>
-            <Text style={styles.bookingDetails}>
-              ห้อง : ห้อง {booking.RoomID}
-            </Text>
-            <Text style={styles.bookingDetails}>
-              วันที่ : {formatDate(booking.Date)}
-            </Text>
-            <Text style={styles.bookingDetails}>
-              เวลา : {booking.StartTime} - {booking.EndTime}
-            </Text>
-            <Text style={styles.bookingDetails}>
-              สถานะ : {booking.Status}
-            </Text>
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() => approveBooking(booking)}>
-              <Text style={styles.buttonText}>ยกเลิกการจอง</Text>
-            </TouchableOpacity>
-          </View>
-        ))}
-      </View>
+      <ScrollView>
+        <View>
+          {bookings.map((booking) => (
+            <View style={styles.bookingItem} key={booking.BookingID}>
+              <Text style={styles.bookingTitle}>หัวข้อการประชุม : {booking.Topic}</Text>
+              <Text style={styles.bookingDetails}>
+                ห้อง : ห้อง {booking.RoomID}
+              </Text>
+              <Text style={styles.bookingDetails}>
+                วันที่ : {formatDate(booking.Date)}
+              </Text>
+              <Text style={styles.bookingDetails}>
+                เวลา : {booking.StartTime} - {booking.EndTime}
+              </Text>
+              <Text style={styles.bookingDetails}>
+                สถานะ : {booking.Status}
+              </Text>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => approveBooking(booking)}>
+                <Text style={styles.buttonText}>ยกเลิกการจอง</Text>
+              </TouchableOpacity>
+            </View>
+          ))}
+        </View>
+      </ScrollView>
     </View>
   );
 };

@@ -6,44 +6,67 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 // import DropDownPicker from 'react-native-dropdown-picker';
 import { Picker } from '@react-native-picker/picker';
+import { DataTable } from 'react-native-paper';
+import { CustomPicker } from 'react-native-custom-picker'
 
 const ReportsScreen = () => {
   const [ID, setID] = useState('');
   const [tableData, setTableData] = useState([]);
   const navigation = useNavigation();
   const [filteredData, setFilteredData] = useState([]);
-  const [selectedMonth, setSelectedMonth] = useState(null);
-  const thaiMonths = ['มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'];
+  const [selectedMonth, setSelectedMonth] = useState('ทั้งหมด');
+  const thaiMonths = ['ทั้งหมด','มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'];
 
+  
   const getID = async () => {
     const ID = await AsyncStorage.getItem('ID');
     setID(JSON.parse(ID));
   };
 
-  useEffect(() => {
-    getID();
-
-    if (ID) {
-      Service.ReportsAPI(ID)
-        .then(response => {
-          // Create the data table
-          const data = [];
-          // console.log(response.data)
-          response.data.forEach(item => {
-            data.push([item.CheckInDate, item.CheckInTime, item.CheckOutTime, item.ShiftDuration]);
-          });
-
-          setTableData(data);
-          setFilteredData(data); // set filtered data to initial data
-        })
-        .catch(error => console.error(error));
-    }
-  }, []);
-
-  useEffect(() => {
-    // console.log('selectedMonth:', selectedMonth);
+  // useEffect(() => {
     
-    if (selectedMonth) {
+
+  //   if (ID) {
+  //     Service.ReportsAPI(ID)
+  //       .then(response => {
+  //         // Create the data table
+  //         const data = [];
+  //         // console.log(response.data)
+  //         response.data.forEach(item => {
+  //           const checkInDate = item.CheckInDate || '-';
+  //           const checkInTime = item.CheckInTime || '-';
+  //           const checkOutTime = item.CheckOutTime || '-';
+  //           const shiftDuration = item.ShiftDuration || '-';
+  //           data.push([checkInDate, checkInTime, checkOutTime, shiftDuration]);
+  //         });          
+  //         setTableData(data);
+  //         setFilteredData(data); // set filtered data to initial data
+  //       })
+  //       .catch(error => console.error(error));
+  //   }
+  // }, []);
+
+  useEffect(() => {
+    if(tableData.length === 0){
+      getID();
+      Service.ReportsAPI(ID)
+      .then(response => {
+        // Create the data table
+        const data = [];
+        // console.log(response.data)
+        response.data.forEach(item => {
+          const checkInDate = item.CheckInDate || '-';
+          const checkInTime = item.CheckInTime || '-';
+          const checkOutTime = item.CheckOutTime || '-';
+          const shiftDuration = item.ShiftDuration || '-';
+          data.push([checkInDate, checkInTime, checkOutTime, shiftDuration]);
+        });          
+        setTableData(data);
+        setFilteredData(data); // set filtered data to initial data
+      })
+      .catch(error => console.error(error));
+    }
+    if (selectedMonth !== 'ทั้งหมด') {
       const filteredData = filterDataByMonth(tableData, selectedMonth);
       console.log('filteredData:', filteredData);
       setFilteredData(filteredData); // set filtered data to updated data
@@ -52,49 +75,55 @@ const ReportsScreen = () => {
       setFilteredData(tableData); // reset filtered data to initial data
     }
   }, [selectedMonth, tableData]);
-  ;
 
   const filterDataByMonth = (data, month) => {
     return data.filter(item => {
       const dateArray = item[0].split('/')
       const outputDate = `${dateArray[0]}-${dateArray[1].padStart(2, '0')}-${dateArray[2].padStart(2, '0')}`
       const checkInDate = new Date(outputDate);
-      const checkInMonth = thaiMonths[checkInDate.getMonth()];
-      
-      // console.log('checkInMonth:', checkInMonth, 'selectedMonth:', month);
-  
+      const checkInMonth = thaiMonths[checkInDate.getMonth()+1];
       return checkInMonth === month;
     });
   }
-  
 
   return (
     <View>
-      <Picker
-        selectedValue={selectedMonth}
-        onValueChange={(itemValue, itemIndex) => setSelectedMonth(itemValue)}
-        prompt="เลือกเดือน"
-      >
-        <Picker.Item label="ทั้งหมด" value={null} />
-        {thaiMonths.map((month, index) => (
-          <Picker.Item key={index} label={month} value={month} />
+      <CustomPicker
+        options={thaiMonths}
+        onValueChange={value => { setSelectedMonth(value) }}
+        defaultValue={'ทั้งหมด'}
+      />
+      <DataTable style={{height: '90%'}}>
+        <DataTable.Header>
+          <DataTable.Title>วันที่</DataTable.Title>
+          <DataTable.Title>เข้างาน</DataTable.Title>
+          <DataTable.Title>ออกงาน</DataTable.Title>
+          <DataTable.Title>ระยะเวลา</DataTable.Title>
+        </DataTable.Header>
+        <ScrollView>
+        {filteredData.map((rowData, index) => (
+          <DataTable.Row key={index}>
+            <DataTable.Cell>{rowData[0]}</DataTable.Cell>
+            <DataTable.Cell>{rowData[1]}</DataTable.Cell>
+            <DataTable.Cell>{rowData[2]}</DataTable.Cell>
+            <DataTable.Cell>{rowData[3]}</DataTable.Cell>
+          </DataTable.Row>
         ))}
-      </Picker>
-      <ScrollView style={{ height: '86%' }}>
-        <Table>
-          <TableWrapper>
-            <Row data={['วันที่', 'เข้างาน', 'ออกงาน', 'ระยะเวลา']} sxtyle={styles.head} textStyle={{ ...styles.text, fontWeight: 'bold' }} />
-            {filteredData.map((rowData, index) => (
-              <Row key={index} data={rowData} style={{ ...(index % 2 && { backgroundColor: '#F7F6E7' }), ...styles.row }} textStyle={styles.text} /> ))
-            }
-          </TableWrapper>
-        </Table>
-      </ScrollView>
-      <TouchableOpacity
+        </ScrollView>
+        <DataTable.Pagination
+          page={1}
+          numberOfPages={3}
+          onPageChange={page => {
+            console.log(page);
+          }}
+          label="1-2 of 6"
+        />
+      </DataTable>
+      {/* <TouchableOpacity
         style={styles.button}
         onPress={() => navigation.navigate('HomeStack')}>
         <Text style={styles.buttonText}>Go Back</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </View>
   );
 };

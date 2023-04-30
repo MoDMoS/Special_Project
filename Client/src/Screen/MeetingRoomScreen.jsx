@@ -85,15 +85,16 @@ const MeetingRoomScreen = () => {
   };
 
   const handleSubmit = async () => {
+    setHaveBooking(false)
     const EmpID = await AsyncStorage.getItem('ID');
     Service.ApporveAPI(JSON.parse(EmpID))
       .then((response) => {
-        // console.log(JSON.stringify(response.data) == '[]');
-        if (JSON.stringify(response.data) == '[]') {
+        console.log(response.data.length);
+        if (response.data.length < 3) {
           const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
           const startTime = startFormatted || start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
           const endTime = endFormatted || end.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-          console.log(startTime, endTime);
+          // console.log(startTime, endTime);
           if (new Date(`2000-01-01T${startTime}`) > new Date(`2000-01-01T${endTime}`)) {
             Alert.alert('เวลาเริ่มไม่สามารถมากกว่าเวลาเลิกได้');
             return;

@@ -104,6 +104,12 @@ const ApporveAPI = async ( empid ) => {
   return axios.post(url, { EmpID: empid }, { headers: { 'content-Type': 'application/json' } });
 };
 
+const UserBookingAPI = async ( empid ) => {
+  const url = REACT_APP_API_URL + '/api/booking/userbooking';
+
+  return axios.post(url, { EmpID: empid }, { headers: { 'content-Type': 'application/json' } });
+};
+
 const Service = {
   LoginAPI,
   RefCodeAPI,
@@ -122,6 +128,7 @@ const Service = {
   DelBookingAPI,
   ReportsAPI,
   ApporveAPI,
+  UserBookingAPI,
 };
 
 export default Service;

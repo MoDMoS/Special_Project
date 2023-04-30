@@ -25,8 +25,8 @@ function toRad(degrees) {
 }
 
 export function isLocationInsideCircle(location, circleRadius) {
-  const circleCenter = {lat: 13.82143854586279, lon: 100.51521981224853};
-  // const circleCenter = {lat: 13.853913193936197, lon: 100.38877181554058};
+  // const circleCenter = {lat: 13.82143854586279, lon: 100.51521981224853};
+  const circleCenter = {lat: 13.580790703767073, lon: 100.3249349453498};
   const distance = haversine(location, circleCenter, {unit: 'meter'});
 
   if (distance <= circleRadius) {
